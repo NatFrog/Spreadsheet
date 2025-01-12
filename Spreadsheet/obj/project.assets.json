@@ -1,0 +1,117 @@
+{
+  "version": 3,
+  "targets": {
+    "net8.0": {
+      "DependencyGraph/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/DependencyGraph.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/DependencyGraph.dll": {}
+        }
+      },
+      "Formula/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/Formula.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Formula.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "DependencyGraph/1.0.0": {
+      "type": "project",
+      "path": "../DependencyGraph/DependencyGraph.csproj",
+      "msbuildProject": "../DependencyGraph/DependencyGraph.csproj"
+    },
+    "Formula/1.0.0": {
+      "type": "project",
+      "path": "../Formula/Formula.csproj",
+      "msbuildProject": "../Formula/Formula.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net8.0": [
+      "DependencyGraph >= 1.0.0",
+      "Formula >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\natal\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\natal\\source\\repos\\spreadsheet-NatFrog\\Spreadsheet\\Spreadsheet\\Spreadsheet.csproj",
+      "projectName": "Spreadsheet",
+      "projectPath": "C:\\Users\\natal\\source\\repos\\spreadsheet-NatFrog\\Spreadsheet\\Spreadsheet\\Spreadsheet.csproj",
+      "packagesPath": "C:\\Users\\natal\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\natal\\source\\repos\\spreadsheet-NatFrog\\Spreadsheet\\Spreadsheet\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\natal\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net8.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "projectReferences": {
+            "C:\\Users\\natal\\source\\repos\\spreadsheet-NatFrog\\Spreadsheet\\DependencyGraph\\DependencyGraph.csproj": {
+              "projectPath": "C:\\Users\\natal\\source\\repos\\spreadsheet-NatFrog\\Spreadsheet\\DependencyGraph\\DependencyGraph.csproj"
+            },
+            "C:\\Users\\natal\\source\\repos\\spreadsheet-NatFrog\\Spreadsheet\\Formula\\Formula.csproj": {
+              "projectPath": "C:\\Users\\natal\\source\\repos\\spreadsheet-NatFrog\\Spreadsheet\\Formula\\Formula.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "allWarningsAsErrors": true,
+        "warnAsError": [
+          "NU1605"
+        ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      }
+    },
+    "frameworks": {
+      "net8.0": {
+        "targetAlias": "net8.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

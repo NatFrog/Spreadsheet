@@ -1,0 +1,12 @@
+C:\Users\natal\source\repos\spreadsheet-NatFrog\Spreadsheet\Formula\obj\Debug\net8.0\Formula.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\natal\source\repos\spreadsheet-NatFrog\Spreadsheet\Formula\obj\Debug\net8.0\Formula.AssemblyInfoInputs.cache
+C:\Users\natal\source\repos\spreadsheet-NatFrog\Spreadsheet\Formula\obj\Debug\net8.0\Formula.AssemblyInfo.cs
+C:\Users\natal\source\repos\spreadsheet-NatFrog\Spreadsheet\Formula\obj\Debug\net8.0\Formula.csproj.CoreCompileInputs.cache
+C:\Users\natal\source\repos\spreadsheet-NatFrog\Spreadsheet\Formula\obj\Debug\net8.0\Formula.sourcelink.json
+C:\Users\natal\source\repos\spreadsheet-NatFrog\Spreadsheet\Formula\bin\Debug\net8.0\Formula.deps.json
+C:\Users\natal\source\repos\spreadsheet-NatFrog\Spreadsheet\Formula\bin\Debug\net8.0\Formula.dll
+C:\Users\natal\source\repos\spreadsheet-NatFrog\Spreadsheet\Formula\bin\Debug\net8.0\Formula.pdb
+C:\Users\natal\source\repos\spreadsheet-NatFrog\Spreadsheet\Formula\obj\Debug\net8.0\Formula.dll
+C:\Users\natal\source\repos\spreadsheet-NatFrog\Spreadsheet\Formula\obj\Debug\net8.0\refint\Formula.dll
+C:\Users\natal\source\repos\spreadsheet-NatFrog\Spreadsheet\Formula\obj\Debug\net8.0\Formula.pdb
+C:\Users\natal\source\repos\spreadsheet-NatFrog\Spreadsheet\Formula\obj\Debug\net8.0\ref\Formula.dll
