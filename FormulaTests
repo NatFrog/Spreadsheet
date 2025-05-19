@@ -1,0 +1,1671 @@
+// <copyright file="FormulaSyntaxTests.cs" company="UofU-CS3500">
+//   Copyright 2024 UofU-CS3500. All rights reserved.
+// </copyright>
+// <authors> Natalie Hicks </authors>
+// <date> September 20th, 2024 </date>
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
+using System.Text;
+
+namespace CS3500.Formula;
+
+/// <summary>
+///   <para>
+///     The following class shows the basics of how to use the MSTest framework,
+///     including:
+///   </para>
+///   <list type="number">
+///     <item> How to catch exceptions. </item>
+///     <item> How a test of valid code should look. </item>
+///   </list>
+/// </summary>
+[TestClass]
+public class FormulaTests
+{
+    // --- Tests for One Token Rule ---
+
+    /// <summary>
+    ///   <para>
+    ///     This test makes sure the right kind of exception is thrown
+    ///     when trying to create a formula with no tokens.
+    ///   </para>
+    ///   <remarks>
+    ///     <list type="bullet">
+    ///       <item>
+    ///         We use the _ (discard) notation because the formula object
+    ///         is not used after that point in the method.  Note: you can also
+    ///         use _ when a method must match an interface but does not use
+    ///         some of the required arguments to that method.
+    ///       </item>
+    ///       <item>
+    ///         string.Empty is often considered best practice (rather than using "") because it
+    ///         is explicit in intent (e.g., perhaps the coder forgot to but something in "").
+    ///       </item>
+    ///       <item>
+    ///         The name of a test method should follow the MS standard:
+    ///         https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices
+    ///       </item>
+    ///       <item>
+    ///         All methods should be documented, but perhaps not to the same extent
+    ///         as this one.  The remarks here are for your educational
+    ///         purposes (i.e., a developer would assume another developer would know these
+    ///         items) and would be superfluous in your code.
+    ///       </item>
+    ///       <item>
+    ///         Notice the use of the attribute tag [ExpectedException] which tells the test
+    ///         that the code should throw an exception, and if it doesn't an error has occurred;
+    ///         i.e., the correct implementation of the constructor should result
+    ///         in this exception being thrown based on the given poorly formed formula.
+    ///       </item>
+    ///     </list>
+    ///   </remarks>
+    ///   <example>
+    ///     <code>
+    ///        // here is how we call the formula constructor with a string representing the formula
+    ///        _ = new Formula( "5+5" );
+    ///     </code>
+    ///   </example>
+    /// </summary>
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestNoTokens_Invalid()
+    {
+        _ = new Formula(string.Empty);
+    }
+
+    /// <summary>
+    ///    <para>
+    ///      This test makes sure the formula code pases when there's only one number variable.
+    ///    </para>
+    /// </summary>
+    [TestMethod]
+    public void FormulaConstructor_TestOneNumberToken_Valid()
+    {
+        _ = new Formula("12");
+    }
+
+    /// <summary>
+    ///    <para>
+    ///       This test checks that the Formula code accepts a single variable token as a valid formula.
+    ///    </para>
+    /// </summary>
+    [TestMethod]
+    public void FormulaConstructor_TestOneVariableToken_Valid()
+    {
+        _ = new Formula("e7");
+    }
+
+    /// <summary>
+    ///    <para>
+    ///       This test checks that the Formula code deosn't accept a single invalid symbol.
+    ///    </para>
+    /// </summary>
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestOneUnacceptedSymbol_Invalid()
+    {
+        _ = new Formula("@");
+    }
+
+    /// <summary>
+    ///    <para>
+    ///       Tests is the formula code doesn't accept a one token when it's an operator.
+    ///    </para>
+    /// </summary>
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestOperatorToken_Invalid()
+    {
+        _ = new Formula("*");
+    }
+
+    /// <summary>
+    ///    <para>
+    ///      Tests is the formula code doesn't accept a one token when it's an end parentheses.
+    ///    </para>
+    /// </summary>
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestOneEndParenthesesToken_Invalid()
+    {
+        _ = new Formula(")");
+    }
+
+    /// <summary>
+    ///    <para>
+    ///       Tests is the formula code doesn't accept a one token when it's an opening parentheses.
+    ///    </para>
+    /// </summary>
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestOneOpeningParenthesesToken_Invalid()
+    {
+        _ = new Formula("(");
+    }
+
+    // --- Tests for Valid Token Rule ---
+
+    /// <summary>
+    ///    <para>
+    ///       Makes sure Scientific Notation is accepted with lowercase e.
+    ///    </para>
+    /// </summary>
+    [TestMethod]
+    public void FormulaConstructor_TestSNLowercaseENotation_Valid()
+    {
+        _ = new Formula("3.5e-6");
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestOnlyParenthesesTokens_Invalid()
+    {
+        _ = new Formula("()");
+    }
+
+    [TestMethod]
+    public void FormulaConstructor_TestSNLowercaseENotationWithOtherTokens_Valid()
+    {
+        _ = new Formula("1 + 3.5e-6");
+    }
+
+    [TestMethod]
+    public void FormulaConstructor_TestSNUppercaseEAccepted_Valid()
+    {
+        _ = new Formula("1 + 3.5E-6");
+    }
+
+    [TestMethod]
+    public void FormulaConstructor_TestParenthesesAccepted_Valid()
+    {
+        _ = new Formula("(1)");
+    }
+
+    [TestMethod]
+    public void FormulaConstructor_TestOperatorsAccepted_Valid()
+    {
+        _ = new Formula("1*1/1+1-1");
+    }
+
+    [TestMethod]
+    public void FormulaConstructor_TestVariablesAccepted_Valid()
+    {
+        _ = new Formula("e33+cat10+abc123");
+    }
+
+    [TestMethod]
+    public void FormulaConstructor_TestNumbersAccepted_Valid()
+    {
+        _ = new Formula("382 + 17092 + 830");
+    }
+
+    [TestMethod]
+    public void FormulaConstructor_TestNumbersWithDecimalsAccepted_Valid()
+    {
+        _ = new Formula("17.08 + 23.92");
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestLetterToken_Invalid()
+    {
+        _ = new Formula("z");
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestWordToken_Invalid()
+    {
+        _ = new Formula("Meow");
+    }
+
+    /// <summary>
+    ///   <para>
+    ///      Makes sure a FormulaFormatException is thrown when there's a token that starts with numbers and then letters (Instead of letters than numbers
+    ///   </para>
+    /// </summary>
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestUnacceptedVariableToken_Invalid()
+    {
+        _ = new Formula("7frog");
+    }
+
+    /// <summary>
+    ///    <para>
+    ///      Makes sure that an invalid variable token in start of string isn't accepted.
+    ///    </para>
+    /// </summary>
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestFalseVariableStart_Invalid()
+    {
+        _ = new Formula("891Hedgehog/2+37+14");
+    }
+
+    /// <summary>
+    ///   <para>
+    ///     Makes sure that an invalid variable token in middle of string isn't accepted.
+    ///   </para>
+    /// </summary>
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestFalseVariableMiddle_Invalid()
+    {
+        _ = new Formula("2+37/(891Hedgehog)+14");
+    }
+
+    /// <summary>
+    ///    <para>
+    ///       Makes sure that and invalid variable token at end of string isn't accepted.
+    ///    </para>
+    /// </summary>
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestFalseVariableEnd_Invalid()
+    {
+        _ = new Formula("2+37/4+3*891Hedgehog");
+    }
+
+    /// <summary>
+    ///   <para>
+    ///     Makes sure that an unaccepted symbol in middle of string throws a FormulaFormatexception.
+    ///   </para>
+    /// </summary>
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestUnacceptedSymbol_Invalid()
+    {
+        _ = new Formula("Y7+18+&&@");
+    }
+
+    // --- Tests for Closing Parenthesis Rule
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestGreaterNumOfClosingParentheses_Invalid()
+    {
+        _ = new Formula("((10)))");
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestNoOpeningParentheses_Invalid()
+    {
+        _ = new Formula("1)");
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestEqualNumOfParenthesesWrongPlacement_Invalid()
+    {
+        _ = new Formula(")2(");
+    }
+
+
+    // --- Tests for Balanced Parentheses Rule
+
+    /// <summary>
+    ///   <para>
+    ///     This test checks that the Formula code doesn't function when the string has an extra end parentheses.
+    ///   </para>
+    /// </summary>
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestExtraEndParentheses_Invalid()
+    {
+        _ = new Formula("2*(7))");
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestMisingClosingParentheses_Invalid()
+    {
+        _ = new Formula("(10");
+    }
+
+    /// <summary>
+    ///   <para>
+    ///     This test checks that the Formula code doesn't function when the string has an extra opening parentheses.
+    ///   </para>
+    /// </summary>
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestExtraOpeningParentheses_Invalid()
+    {
+        _ = new Formula("2*((6)");
+    }
+
+    [TestMethod]
+    public void FormulaConstructor_TestMultipleParentheses_Valid()
+    {
+        _ = new Formula("(((((101))))) + 1");
+    }
+
+    // --- Tests for First Token Rule
+
+    /// <summary>
+    ///   <para>
+    ///     Make sure a simple well formed formula is accepted by the constructor (the constructor
+    ///     should not throw an exception).
+    ///   </para>
+    ///   <remarks>
+    ///     This is an example of a test that is not expected to throw an exception, i.e., it succeeds.
+    ///     In other words, the formula "1+1" is a valid formula which should not cause any errors.
+    ///   </remarks>
+    /// </summary>
+    [TestMethod]
+    public void FormulaConstructor_TestFirstTokenNumber_Valid()
+    {
+        _ = new Formula("1+1");
+    }
+
+    /// <summary>
+    ///     Make sure that there's a FormulaFormatException when the first token isn't a number, letter, or opening parentheses.
+    /// <summary>
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestFirstTokenOperator_Invalid()
+    {
+        _ = new Formula("+1+56");
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestEndParenthesesComesFirst_Invalid()
+    {
+        _ = new Formula(")14+56");
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestFirstTokenInvalidToken_Invalid()
+    {
+        _ = new Formula("56ER+2+4+5");
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestFirstTokenInvalidToken2_Invalid()
+    {
+        _ = new Formula("@+2+4+5");
+    }
+
+    [TestMethod]
+    public void FormulaConstructor_TestOpenParenthesesComesFirst_Valid()
+    {
+        _ = new Formula("(8+A8)*7");
+    }
+
+    [TestMethod]
+    public void FormulaConstructor_TestFirstTokenVariable_Valid()
+    {
+        _ = new Formula("G9+6");
+    }
+
+    // --- Tests for  Last Token Rule ---
+
+    /// <summary>
+    ///   <para>
+    ///     Make sure that there's a FormulaFormatException when the last token isn't a number, letter or end parentheses.
+    /// <summary>
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestLastTokenOperator_Invalid()
+    {
+        _ = new Formula("1+");
+    }
+
+    /// <summary>
+    ///   <para>
+    ///     Make sure that there's a FormulaFormatException when the last token is an invalid variable.
+    /// <summary>
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestLastTokenVariable_Invalid()
+    {
+        _ = new Formula("1+338EEE");
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestLastTokenVariable2_Invalid()
+    {
+        _ = new Formula("1+");
+    }
+
+    [TestMethod]
+    public void FormulaConstructor_TestLastTokenEndParentheses_Valid()
+    {
+        _ = new Formula("1 + (1+56)");
+    }
+
+    [TestMethod]
+    public void FormulaConstructor_TestLastTokenNumber_Valid()
+    {
+        _ = new Formula("6 + 680");
+    }
+
+    [TestMethod]
+    public void FormulaConstructor_TestLastTokenVariable_Valid()
+    {
+        _ = new Formula("680+A4");
+    }
+
+
+    // --- Tests for Parentheses/Operator Following Rule ---
+
+    /// <summary>
+    ///   <para>
+    ///     Make sure that there's a FormulaFormatException when a parentheses is followed by an operator.
+    ///   </para>
+    /// <summary>
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestOperatorAfterOpenParentheses_Invalid()
+    {
+        _ = new Formula("(+4)");
+    }
+
+    /// <summary>
+    ///   <para>
+    ///     Make sure that there's a FormulaFormatException when an operator is followed by another operator.
+    ///   </para>
+    /// <summary>
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestOperatorAfterOperator_Invalid()
+    {
+        _ = new Formula("5+-8");
+    }
+
+    // --- Tests for Extra Following Rule ---
+
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestUnacceptedSymbolAfterNumber_Invalid()
+    {
+        _ = new Formula("89@");
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestVariableAfterNumber_Invalid()
+    {
+        _ = new Formula("5 A9");
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(FormulaFormatException))]
+    public void FormulaConstructor_TestNumberAfterVariable_Invalid()
+    {
+        _ = new Formula("A9 5");
+    }
+
+    [TestMethod]
+    public void FormulaConstructor_TestClosingParenAfterClosingParen_Valid()
+    {
+        _ = new Formula("(3*(1+(4*(a3))+5))");
+    }
+
+    /// <summary>
+    ///   <para>
+    ///     Makes sure the formula constructor accepts a string that is valid
+    ///     according to the extra following rule.
+    ///   </para>
+    /// </summary>
+    [TestMethod]
+    public void FormulaConstructor_TestExtraFollowingRule_Valid()
+    {
+        _ = new Formula("(6+9)+7/eh0+2");
+    }
+
+    //Tests for GetVariables
+
+    [TestMethod]
+    public void FormulaConstructor_TestGetVarsStoresEachVarInstanceOnce_Valid()
+    {
+        HashSet<string> set = new HashSet<string>() { "X2" };
+
+
+        Formula test = new Formula("x2+5+13+45+X2-x2");
+        HashSet<string> variables = (HashSet<string>)test.GetVariables();
+        Assert.AreEqual(variables.Count, set.Count);
+        Assert.AreEqual((string)variables.ElementAt(0), (string)set.ElementAt(0));
+        Assert.AreEqual(variables.ToString(), set.ToString());
+    }
+
+    [TestMethod]
+    public void FormulaConstructor_TestGetVAriablesMultipleVariables_Valid()
+    {
+        HashSet<string> set = new HashSet<string>() { "X2", "X5", "ASDF3141" };
+
+
+        Formula test = new Formula("x2+5+13+45+X2-x5-x2 + asdf3141+X5");
+        HashSet<string> variables = (HashSet<string>)test.GetVariables();
+        Assert.AreEqual(variables.Count, set.Count);
+        Assert.AreEqual((string)variables.ElementAt(0), (string)set.ElementAt(0));
+        Assert.AreEqual(variables.ToString(), set.ToString());
+    }
+
+    //Tests for ToString
+
+    [TestMethod]
+    public void FormulaConstructor_TestToStringDecimalNormalization_Valid()
+    {
+        string testString = "5+9";
+
+        Formula testFormula = new Formula("5.000+9.0000");
+        Assert.AreEqual((string)testFormula.ToString(), testString);
+    }
+
+    [TestMethod]
+    public void FormulaConstructor_TestToStringlowerCase_Valid()
+    {
+        string testString = "X1+Y1";
+
+        Formula testFormula = new Formula("x1+y1");
+        Assert.AreEqual((string)testFormula.ToString(), testString);
+    }
+
+    [TestMethod]
+    public void FormulaConstructor_TestToStringNormalization_Valid()
+    {
+
+        string testString = "A6+23+HJSLSLWKWJHJJI9910";
+
+        Formula testFormula = new Formula("a6 + 23 + hjslslwkwjhjji9910");
+
+        Assert.AreEqual((string)testFormula.ToString(), testString);
+
+    }
+
+    [TestMethod]
+    public void FormulaConstructor_TestToStringScientificNotation_Valid()
+    {
+
+        string testString = "4000+A6+23+HJSLSLWKWJHJJI9910";
+
+        Formula testFormula = new Formula("4e3+A6 + 23 + hjslslwkwjhjji9910");
+
+        Assert.AreEqual((string)testFormula.ToString(), testString);
+
+    }
+
+    [TestMethod]
+    public void FormulaConstructor_TestToStrinScientificNotationNegativeExponenet_Valid()
+    {
+
+        string testString = "0.004+A6+23+HJSLSLWKWJHJJI9910";
+
+        Formula testFormula = new Formula("4e-3+A6 + 23 + hjslslwkwjhjji9910");
+
+        Assert.AreEqual((string)testFormula.ToString(), testString);
+
+    }
+
+    [TestMethod]
+    public void ToStringDifferentFormulasHaveDifferentStrings_Small() 
+    {
+        Formula f1 = new("2");
+        Formula f2 = new("5");
+        Assert.IsTrue(f1.ToString() != f2.ToString());
+    }
+
+    //PS4 Tests-------------------------------------------------------------------------------------------------------------------------
+
+    //Tests for "==" operator
+
+    [TestMethod]
+    public void DoubleEqualSignOperator_WorksOnSimpleFormulas()
+    {
+        Formula f1 = new("267");
+        Formula f2 = new("267");
+        Assert.IsTrue(f1 == f2);
+    }
+
+    [TestMethod]
+    public void DoubleEqualSignOperator_WorksOnFormulaWithVariables()
+    {
+        Formula f1 = new("267 + A8");
+        Formula f2 = new("267 + A8");
+        Assert.IsTrue(f1 == f2);
+    }
+
+    [TestMethod]
+    public void DoubleEqualSignOperator_StringsNeedToBeNormalized()
+    {
+        Formula f1 = new("agajajja68+obombna02+10e-2");
+        Formula f2 = new("AGajaJJa68+obomBNa02+10E-2");
+        Assert.IsTrue(f1 == f2);
+    }
+
+    [TestMethod]
+    public void DoubleEqualSignOperator_OneVariableInFormula()
+    {
+        Formula f1 = new("meow37");
+        Formula f2 = new("meow37");
+        Assert.IsTrue(f1 == f2);
+    }
+
+    [TestMethod]
+    public void DoubleEqualSignOperator_OneNumberInFormula()
+    {
+        Formula f1 = new("48484848484848");
+        Formula f2 = new("48484848484848");
+        Assert.IsTrue(f1 == f2);
+    }
+
+    [TestMethod]
+    public void DoubleEqualSignOperator_OneScientificNotationInFormula()
+    {
+        Formula f1 = new("3e9");
+        Formula f2 = new("3e9");
+        Assert.IsTrue(f1 == f2);
+    }
+
+    [TestMethod]
+    public void DoubleEqualSignOperator_WhenThereAreParentheses()
+    {
+        Formula f1 = new("(3e9)+(9)");
+        Formula f2 = new("(3e9)+(9)");
+        Assert.IsTrue(f1 == f2);
+    }
+
+    // Tests for != Operator
+
+    [TestMethod]
+    public void NotEqualOperator_WorksOnSimpleFormulas()
+    {
+        Formula f1 = new("2677");
+        Formula f2 = new("2678");
+        Assert.IsTrue(f1 != f2);
+    }
+
+    [TestMethod]
+    public void NotEqualOperator_WorksOnFormulaWithVariables_False()
+    {
+        Formula f1 = new("267 + A8");
+        Formula f2 = new("267 + A8");
+        Assert.IsFalse(f1 != f2);
+    }
+
+    [TestMethod]
+    public void NotEqualOperator_StringsNeedToBeNormalized_False()
+    {
+        Formula f1 = new("agajajja68+obombna02+10e-2");
+        Formula f2 = new("AGajaJJa68+obomBNa02+10E-2");
+        Assert.IsFalse(f1 != f2);
+    }
+
+    [TestMethod]
+    public void NotEqualOperator_OneVariableInFormula()
+    {
+        Formula f1 = new("meow37");
+        Formula f2 = new("woof37");
+        Assert.IsTrue(f1 != f2);
+    }
+
+    [TestMethod]
+    public void NotEqualOperator_OneNumberInFormula_False()
+    {
+        Formula f1 = new("48484848484848");
+        Formula f2 = new("48484848484848");
+        Assert.IsFalse(f1 != f2);
+    }
+
+    [TestMethod]
+    public void NotEqualOperator_OneScientificNotationInFormula()
+    {
+        Formula f1 = new("3e9");
+        Formula f2 = new("3e8");
+        Assert.IsTrue(f1 != f2);
+    }
+
+    [TestMethod]
+    public void NotEqualOperator_WhenThereAreParentheses()
+    {
+        Formula f1 = new("(3e9)+(9)");
+        Formula f2 = new("((3e9)+(9))");
+        Assert.IsTrue(f1 != f2);
+    }
+
+    // Equals Method tests
+
+    [TestMethod]
+    public void EqualsMethod_WhenObjIsNotAFormula()
+    {
+        Formula f1 = new("A7");
+        Stack<string> f2 = new();
+        f2.Push("A7");
+        Assert.IsFalse(f1.Equals(f2));
+    }
+
+    [TestMethod]
+    public void EqualsMethod_StringsNeedToBeNormalized()
+    {
+        Formula f1 = new("agajajja68+obombna02+10e-2");
+        Formula f2 = new("AGajaJJa68+obomBNa02+10E-2");
+        Assert.IsTrue(f1.Equals(f2));
+    }
+
+    [TestMethod]
+    public void EqualsMethod_OneVariableInFormula()
+    {
+        Formula f1 = new("meow37");
+        Formula f2 = new("meow37");
+        Assert.IsTrue(f1.Equals(f2));
+    }
+
+    [TestMethod]
+    public void EqualsMethod_OneNumberInFormula()
+    {
+        Formula f1 = new("48484848484848");
+        Formula f2 = new("48484848484848");
+        Assert.IsTrue(f1.Equals(f2));
+    }
+
+    [TestMethod]
+    public void EqualsMethod_OneScientificNotationInFormula()
+    {
+        Formula f1 = new("3e9");
+        Formula f2 = new("3e9");
+        Assert.IsTrue(f1.Equals(f2));
+    }
+
+    [TestMethod]
+    public void EqualsMethod_WhenThereAreParentheses()
+    {
+        Formula f1 = new("(3e9)+(9)");
+        Formula f2 = new("(3e9)+(9)");
+        Assert.IsTrue(f1.Equals(f2));
+    }
+
+    [TestMethod]
+    public void EqualsMethod_WhenObjIsNull()
+    {
+        Formula f1 = new("(3e9)+(9)");
+        string? f2 = null;
+        Assert.IsFalse(f1.Equals(f2));
+    }
+
+    // Tests For Evaluate Method
+
+    // Private lookup that has values for some variables and defualt value of 6 for non registered variables.
+    private static double GetVarValue(string variableName)
+    {
+        if (variableName == "A0")
+            return 0;
+        else if (variableName == "A1")
+            return 1;
+        else if (variableName == "A2")
+            return 2;
+        else if (variableName == "A3")
+            return 3;
+        else if (variableName == "A4")
+            return 4;
+        else if (variableName == "A5")
+            return 5;
+        else if (!variableName.StartsWith('A'))
+            throw new ArgumentException("Invalid Variable");
+       return 6;
+    }
+
+    [TestMethod]
+    public void Evaluate_FormulaThatUsesVariables()
+    {
+        Formula f1 = new("A5+A4");
+        Assert.AreEqual(9.0, (double)f1.Evaluate(GetVarValue), 1e-9);
+    }
+
+    [TestMethod]
+    public void Evaluate_FormulaThatUsesNumbers()
+    {
+        Formula f1 = new("5+4");
+        Assert.AreEqual(9.0, (double)f1.Evaluate(GetVarValue), 1e-9);
+    }
+
+    [TestMethod]
+    public void Evaluate_ZeroDividedByNumber()
+    {
+        Formula f1 = new("0/9");
+        Assert.AreEqual(0.0, (double)f1.Evaluate(GetVarValue), 1e-9);
+    }
+
+    [TestMethod]
+    public void Evaluate_DivideVariableByZero_FormulaError()
+    {
+        Formula f1 = new("A1/0");
+        Assert.IsInstanceOfType(f1.Evaluate(GetVarValue), typeof(FormulaError));
+    }
+
+    [TestMethod]
+    public void Evaluate_DivideVariableByVariableWithValueZero_FormulaError()
+    {
+        Formula f1 = new("A1/A0");
+        Assert.IsInstanceOfType(f1.Evaluate(GetVarValue), typeof(FormulaError));
+    }
+
+    [TestMethod]
+    public void Evaluate_DivideNumberByVariableWithValueZero_FormulaError()
+    {
+        Formula f1 = new("10/A0");
+        Assert.IsInstanceOfType(f1.Evaluate(GetVarValue), typeof(FormulaError));
+    }
+
+    [TestMethod]
+    public void Evaluate_DivideThingInParenthsesByZero_FormulaError()
+    {
+        Formula f1 = new("(5+9)/0");
+        Assert.IsInstanceOfType(f1.Evaluate(GetVarValue), typeof(FormulaError));
+    }
+
+    [TestMethod]
+    public void Evaluate_FormulaWithDifferentOperators()
+    {
+        Formula f1 = new("20/5 + 3 - 4");
+        Assert.AreEqual(3.0, (double)f1.Evaluate(GetVarValue), 1e-9);
+    }
+
+    [TestMethod]
+    public void Evaluate_FormulaWithDifferentOperatorsAndParentheses()
+    {
+        Formula f1 = new("20/5 + (4 - 3)");
+        Assert.AreEqual(5.0, (double)f1.Evaluate(GetVarValue), 1e-9);
+    }
+
+    [TestMethod]
+    public void Evaluate_FormulaWithAllScenarios()
+    {
+        Formula f1 = new("20/5 + (4 - 3)+ 10e2");
+        Assert.AreEqual(1005.0, (double)f1.Evaluate(GetVarValue), 1e-9);
+    }
+
+    [TestMethod]
+    public void Evaluate_FormulaWithManyParenthses()
+    {
+        Formula f1 = new("(((((((((((((((((20/5 + (4 - 3)+ 10e2)))))))))))))))))");
+        Assert.AreEqual(1005.0, (double)f1.Evaluate(GetVarValue), 1e-9);
+    }
+
+    [TestMethod]
+    public void Evaluate_FormulaParenthsesMultiplication()
+    {
+        Formula f1 = new("(6+3)*(A5*A3)");
+        Assert.AreEqual(135.0, (double)f1.Evaluate(GetVarValue), 1e-9);
+    }
+
+    [TestMethod]
+    public void Evaluate_FormulaVariablesWithParenthses()
+    {
+        Formula f1 = new("(A1+A3)/(A5+A3)");
+        Assert.AreEqual(0.5, (double)f1.Evaluate(GetVarValue), 1e-9);
+    }
+
+    [TestMethod]
+    public void Evaluate_FormulaWithMultipliedVariables()
+    {
+        Formula f1 = new("A5*A4");
+        Assert.AreEqual(20.0, (double)f1.Evaluate(GetVarValue), 1e-9);
+    }
+
+    [TestMethod]
+    public void Evaluate_TestDivision()
+    {
+        Formula f1 = new("30/3/2");
+        Assert.AreEqual(5.0, (double)f1.Evaluate(GetVarValue), 1e-9);
+    }
+
+    [TestMethod]
+    public void Evaluate_TestMultiplication()
+    {
+        Formula f1 = new("30*3*2");
+        Assert.AreEqual(180.0, (double)f1.Evaluate(GetVarValue), 1e-9);
+    }
+
+    [TestMethod]
+    public void Evaluate_TestAddition()
+    {
+        Formula f1 = new("30+3+2");
+        Assert.AreEqual(35.0, (double)f1.Evaluate(GetVarValue), 1e-9);
+    }
+
+    [TestMethod]
+    public void Evaluate_TestSubtraction()
+    {
+        Formula f1 = new("30-3-2");
+        Assert.AreEqual(25.0, (double)f1.Evaluate(GetVarValue), 1e-9);
+    }
+
+    [TestMethod]
+    public void Evaluate_TestDivisionByZero()
+    {
+        Formula f1 = new("30/0");
+        Assert.IsInstanceOfType(f1.Evaluate(GetVarValue), typeof(FormulaError));
+        
+    }
+
+    [TestMethod]
+    public void Evaluate_DivisionBySomethingInParenthesesThatEqualsZero()
+    {
+        Formula f1 = new("3/(0)");
+        Assert.IsInstanceOfType(f1.Evaluate(GetVarValue), typeof(FormulaError));
+
+    }
+
+    [TestMethod]
+    public void Evaluate_Precise()
+    {
+        Formula f1 = new("4+7+9/3+90-3+67");
+        Assert.AreEqual(168.0, (double)f1.Evaluate(GetVarValue), 1e-9);
+
+    }
+
+    [TestMethod]
+    public void Evaluate_FormulaResultsInZero()
+    {
+        Formula f1 = new("32-5-18-9");
+        Assert.AreEqual(0.0, (double)f1.Evaluate(GetVarValue), 1e-9);
+    }
+
+    [TestMethod]
+    public void Evaluate_FormulaDivisionByOne()
+    {
+        Formula f1 = new("37/1");
+        Assert.AreEqual(37.0, (double)f1.Evaluate(GetVarValue), 1e-9);
+    }
+
+    [TestMethod]
+    public void Evaluate_FormulaDivisionByVaraibleWithValueOfOne()
+    {
+        Formula f1 = new("37/A1");
+        Assert.AreEqual(37.0, (double)f1.Evaluate(GetVarValue), 1e-9);
+    }
+
+    [TestMethod]
+    public void Evaluate_FormulaDivisionByScientificNotationWithValueOfOne()
+    {
+        Formula f1 = new("37/1e0");
+        Assert.AreEqual(37.0, (double)f1.Evaluate(GetVarValue), 1e-9);
+    }
+
+    [TestMethod]
+    public void Evaluate_FormulaPerciseResult()
+    {
+        Formula f1 = new("10/10/10/10");
+        Assert.AreEqual(0.01, (double)f1.Evaluate(GetVarValue), 1e-9);
+    }
+
+    [TestMethod]
+    public void Evaluate_LookupHasNoValue()
+    {
+        Formula f1 = new("FGKMJU890776");
+        Assert.IsInstanceOfType(f1.Evaluate(GetVarValue), typeof(FormulaError));
+
+    }
+
+    [TestMethod]
+    public void Evaluate_LambdaAsDelegate()
+    {
+        Formula f1 = new("5+s3");
+        Assert.AreEqual(8.0, (double)f1.Evaluate(s => 3), 1e-9);
+
+    }
+
+    [TestMethod]
+    public void Evaluate_VAriableDoesNotHaveLookup_FormulaError()
+    {
+        Formula f1 = new("5+s3");
+        Assert.IsInstanceOfType(f1.Evaluate(GetVarValue), typeof(FormulaError));
+
+    }
+
+    //TestsForHashCode
+
+    [TestMethod]
+    public void HashCode_TestFormulaWithParenthesesAndWithout_UnequalCodes()
+    {
+        Formula f1 = new("1");
+        Formula f2 = new("(1)");
+        Assert.IsFalse(f1.GetHashCode == f2.GetHashCode);
+
+    }
+
+    [TestMethod]
+    public void HashCode_TestFormulasIdentical_EqualCodes()
+    {
+        Formula f1 = new("(1)");
+        Formula f2 = new("(1)");
+        int f1Hash = f1.GetHashCode();  
+        int f2Hash = f2.GetHashCode();  
+        Assert.AreEqual(f1Hash, f2Hash);
+
+    }
+
+    [TestMethod]
+    public void HashCode_TestFormulaWithSpaces_SameHashCode()
+    {
+        Formula f1 = new("2+  (1 )");
+        Formula f2 = new("2+(1)");
+        int f1Hash = f1.GetHashCode();
+        int f2Hash = f2.GetHashCode();
+        Assert.AreEqual(f1Hash, f2Hash);
+
+    }
+
+    [TestMethod]
+    public void HashCode_TestFormulaUnNormalizedHas_SameHashCode()
+    {
+        Formula f1 = new("a6+hksjssh77898+10e2");
+        Formula f2 = new("A6+HKSJSSH77898+1000");
+        int f1Hash = f1.GetHashCode();
+        int f2Hash = f2.GetHashCode();
+        Assert.AreEqual(f1Hash, f2Hash);
+
+    }
+
+    /// <summary>
+    /// Test that a single number equals itself.
+    /// </summary>
+    [TestMethod]
+    [Timeout(5000)]
+    [TestCategory("1")]
+    public void Evaluate_SingleNumber_Equals5()
+    {
+        Formula formula = new("5");
+        Assert.AreEqual(5.0, formula.Evaluate(s => 0));
+    }
+    /// <summary>
+    /// Test that a single variable evaluates to the expected value.
+    /// </summary>
+    [TestMethod]
+    [Timeout(5000)]
+    [TestCategory("2")]
+    public void Evaluate_SingleVariable_EqualsLookup()
+    {
+        Formula formula = new("X5");
+        Assert.AreEqual(13.0, formula.Evaluate(s => 13));
+        Assert.AreEqual(20.0, formula.Evaluate(s => 20));
+        Assert.AreEqual(-1.0, formula.Evaluate(s => -1));
+    }
+    /// <summary>
+    /// Test that simple addition works.
+    /// </summary>
+    [TestMethod]
+    [Timeout(5000)]
+    [TestCategory("3")]
+    public void Evaluate_AdditionOperator_Equals8()
+    {
+        Formula formula = new("5+3");
+        Assert.AreEqual(8.0, formula.Evaluate(s => 0));
+    }
+    /// <summary>
+    /// Test that simple subtraction works.
+    /// </summary>
+    [TestMethod]
+    [Timeout(5000)]
+    [TestCategory("4")]
+    public void Evaluate_SubtractionOperator_Equals8()
+    {
+        Formula formula = new("18-10");
+        Assert.AreEqual(8.0, formula.Evaluate(s => 0));
+    }
+    /// <summary>
+    /// Test that simple multiplication works.
+    /// </summary>
+    [TestMethod]
+    [Timeout(5000)]
+    [TestCategory("5")]
+    public void Evaluate_MultiplicationOperator_Equals8()
+    {
+        Formula formula = new("2*4");
+        Assert.AreEqual(8.0, formula.Evaluate(s => 0));
+    }
+    /// <summary>
+    /// Test that simple division works.
+    /// </summary>
+    [TestMethod]
+    [Timeout(5000)]
+    [TestCategory("6")]
+    public void Evaluate_DivisionOperator_Equals8()
+    {
+        Formula formula = new("16/2");
+        Assert.AreEqual(8.0, formula.Evaluate(s => 0));
+    }
+    /// <summary>
+    /// Test that Variables work with Arithmetic.
+    /// </summary>
+    [TestMethod]
+    [Timeout(5000)]
+    [TestCategory("7")]
+    public void Evaluate_VariablePlusValue_Equals8()
+    {
+        Formula formula = new("2+X1");
+        Assert.AreEqual(8.0, formula.Evaluate(s => 6));
+    }
+    /// <summary>
+    /// Test multiple variables.
+    /// </summary>
+    [TestMethod]
+    [Timeout(5000)]
+    [TestCategory("8")]
+    public void Evaluate_MultipleVariables_Equals100()
+    {
+        Formula formula = new("X1+X2+X3+X4");
+        Assert.AreEqual(100.0, formula.Evaluate(s => (s == "X1") ? 55 : 15));
+    }
+    /// <summary>
+    /// Test variables normalization.
+    /// </summary>
+    [TestMethod]
+    [Timeout(5000)]
+    [TestCategory("9")]
+    public void Evaluate_LowerCaseVariable_Equals100()
+    {
+        Formula formula = new("x1+X1");
+        Assert.AreEqual(100.0, formula.Evaluate(s => 50));
+    }
+    /// <summary>
+    /// Test that an unknown variable returns a formula error object.
+    /// </summary>
+    [TestMethod]
+    [Timeout(5000)]
+    [TestCategory("10")]
+    public void Evaluate_TestUnknownVariable()
+    {
+        Formula formula = new("2+X1");
+        var result = formula.Evaluate(s => {
+            throw new ArgumentException("Unknown variable" ); } );
+        Assert.IsInstanceOfType(result, typeof(FormulaError));
+        }
+        /// <summary>
+        /// Test order of operation precedence * before +.
+        /// </summary>
+        [TestMethod]
+        [Timeout(5000)]
+        [TestCategory("11")]
+    public void Evaluate_OperatorPrecedence_MultiplicationThenAdd()
+        {
+            Formula formula = new("2*3+2");
+            Assert.AreEqual(8.0, formula.Evaluate(s => 0));
+        }
+        /// <summary>
+        /// Test order of operation precedence * before +.
+        /// </summary>
+        [TestMethod]
+        [Timeout(5000)]
+        [TestCategory("12")]
+        public void Evaluate_OperatorPrecedence_SubtractThenMultiplication()
+        {
+            Formula formula = new("26-6*3");
+            Assert.AreEqual(8.0, formula.Evaluate(s => 0));
+        }
+        /// <summary>
+        /// Test that parentheses override precedence rules (or that they have
+        /// the highest precedence).
+        /// </summary>
+        [TestMethod]
+        [Timeout(5000)]
+        [TestCategory("13")]
+        public void Evaluate_ParenthesesBeforeTimes_Equals8()
+        {
+            Formula formula = new("(2+2)*2");
+            Assert.AreEqual(8.0, formula.Evaluate(s => 0));
+        }
+        /// <summary>
+        /// Test that parentheses have higher precedence even when
+        /// they come last.
+        /// </summary>
+        [TestMethod]
+        [Timeout(5000)]
+        [TestCategory("14")]
+        public void Evaluate_ParenthesesAfterTimes_Equals100()
+        {
+            Formula formula = new("20*(6-1)");
+            Assert.AreEqual(100.0, formula.Evaluate(s => 0));
+        }
+        /// <summary>
+        /// Evaluate that parentheses don't make a difference when
+        /// they shouldn't make a difference.
+        /// </summary>
+        [TestMethod]
+        [Timeout(5000)]
+        [TestCategory("15")]
+        public void Evaluate_PlusInParentheses_Equals100()
+        {
+            Formula formula = new("25+(25+25)+25");
+            Assert.AreEqual(100.0, formula.Evaluate(s => 0));
+        }
+        /// <summary>
+        /// Evaluate a slightly more involved expression with
+        /// parentheses and order of precedence.
+        /// </summary>
+        [TestMethod]
+        [Timeout(5000)]
+        [TestCategory("16")]
+        public void Evaluate_PlusTimesAndParentheses_Equals100()
+        {
+            Formula formula = new("2+(3+5*9)-(50-100)");
+            Assert.AreEqual(100.0, formula.Evaluate(s => 0));
+        }
+        /// <summary>
+        /// Test operators directly after parentheses.
+        /// </summary>
+        [TestMethod]
+        [Timeout(5000)]
+        [TestCategory("17")]
+        public void Evaluate_OperatorAfterParens_Equals100()
+        {
+            Formula formula = new("(10*11)-10/1");
+            Assert.AreEqual(100.0, formula.Evaluate(s => 0));
+        }
+        /// <summary>
+        /// Test another more complex set of parentheses with all operators.
+        /// </summary>
+        [TestMethod]
+        [Timeout(5000)]
+        [TestCategory("18")]
+        public void Evaluate_TestComplexAllOperatorsAndParentheses_Equals100()
+        {
+            Formula formula = new("200-3*(3+5)*3/2-(8*8)");
+            Assert.AreEqual(100.0, formula.Evaluate(s => 0));
+        }
+        /// <summary>
+        /// Test another complex equation.
+        /// </summary>
+        [TestMethod]
+        [Timeout(5000)]
+        [TestCategory("19")]
+        public void Evaluate_ComplexAndParentheses_Equals100()
+        {
+            Formula formula = new("(2+3*5+(3+4*8)*5+2)-94");
+            Assert.AreEqual(100.0, formula.Evaluate(s => 0));
+        }
+        /// <summary>
+        /// Test division by zero.
+        /// </summary>
+        [TestMethod]
+        [Timeout(5000)]
+        [TestCategory("20")]
+        public void Evaluate_DirectDivideByZero_FormulaError()
+        {
+            Formula formula = new("5/0");
+            var result = formula.Evaluate(s => 0);
+            Assert.IsInstanceOfType(result, typeof(FormulaError));
+        }
+        /// <summary>
+        /// Divide by zero as computed by variables.
+        /// </summary>
+        [TestMethod]
+        [Timeout(2000)]
+        [TestCategory("21")]
+        public void TestDivideByZeroVars()
+        {
+            Formula f = new("(5 + X1) / (X1 - 3)");
+            var result = f.Evaluate(s => 3);
+            Assert.IsInstanceOfType(result, typeof(FormulaError));
+        }
+        /// <summary>
+        /// Test complex formula with multiple variables.
+        /// </summary>
+        [TestMethod]
+        [Timeout(5000)]
+        [TestCategory("22")]
+        public void Evaluate_ComplexMultiVar_EqualsNegative18()
+        {
+            Formula formula = new("(Y1*3-8/2+4*(8-9*2)/2*X7)-6");
+            Assert.AreEqual(-18.0, formula.Evaluate(s => (s == "X7") ? 1 : 4));
+        }
+        /// <summary>
+        /// Lots of nested parens, following on the right.
+        /// </summary>
+        [TestMethod]
+        [Timeout(5000)]
+        [TestCategory("23")]
+        public void Evaluate_TestComplexNestedParensRight_Equals6()
+        {
+            Formula formula = new("x1+(x2+(x3+(x4+(x5+x6))))");
+            Assert.AreEqual(6.0, formula.Evaluate(s => 1));
+        }
+        /// <summary>
+        /// Lots of nested parens, starting on the left side.
+        /// </summary>
+        [TestMethod]
+        [Timeout(5000)]
+        [TestCategory("24")]
+        public void Evaluate_TestComplexNestedParensLeft_Equals12()
+        {
+            Formula formula = new("((((x1+x2)+x3)+x4)+x5)+x6");
+            Assert.AreEqual(12.0, formula.Evaluate(s => 2));
+        }
+        /// <summary>
+        /// Simple Repeated Variable.
+        /// </summary>
+        [TestMethod]
+        [Timeout(5000)]
+        [TestCategory("25")]
+        public void Evaluate_RepeatedVarWithVariousOperators_Equals3()
+        {
+            Formula formula = new("a4-a4*a4/a4+a4");
+            Assert.AreEqual(3.0, formula.Evaluate(s => 3));
+        }
+        /// <summary>
+        /// Test that the formula is not using a shared stack between
+        /// calls.
+        /// </summary>
+        [TestMethod]
+        [Timeout(5000)]
+        [TestCategory("26")]
+        public void Evaluate_SeparateStacks_StacksClearedEachTimeAndEquals15()
+        {
+            Formula formula = new("2*6+3");
+            Assert.AreEqual(15.0, formula.Evaluate(s => 0));
+            Assert.AreEqual(15.0, formula.Evaluate(s => 0));
+        }
+        /// <summary>
+        /// Test that the formula is not using a shared stack between
+        /// multiple formulas.
+        /// </summary>
+        [TestMethod]
+        [Timeout(5000)]
+        [TestCategory("27")]
+        public void Evaluate_FormulasAreIndependent_Equal15_14_11()
+        {
+            Formula formula1 = new("2*6+3");
+            Formula formula2 = new("2*6+2");
+            Formula formula3 = new("2*6-1");
+            Assert.AreEqual(15.0, formula1.Evaluate(s => 0));
+            Assert.AreEqual(14.0, formula2.Evaluate(s => 0));
+            Assert.AreEqual(11.0, formula3.Evaluate(s => 0));
+        }
+        /// <summary>
+        /// Test that variable values don't matter if there are no variables.
+        /// </summary>
+        [TestMethod]
+        [Timeout(5000)]
+        [TestCategory("28")]
+        public void Evaluate_VariablesHaveValueButFormulaHasNoVariables_Equals10()
+        {
+            Formula formula = new("2*6+3");
+            Assert.AreEqual(15.0, formula.Evaluate(s => 100));
+        }
+        /// <summary>
+        /// Check a formula that computes a lot of decimal places.
+        /// </summary>
+        [TestMethod]
+        [Timeout(2000)]
+        [TestCategory("29")]
+        public void Evaluate_ComplexLotsOfDecimalPlaces_Equals514285714285714()
+        {
+            Formula f = new("y1*3-8/2+4*(8-9*2)/14*x7");
+            double result = (double)f.Evaluate(s => (s == "X7") ? 1 : 4);  
+            Assert.AreEqual(5.14285714285714, result, 1e-9);
+        }
+        /// <summary>
+        /// Check a formula that computes pi to 10 decimal places using
+        /// 10000 adds and subtracts.
+        /// </summary>
+        [TestMethod]
+        [Timeout(2000)]
+        [TestCategory("30")]
+        public void Evaluate_ComputePiStress_PiTo4DecimalPlaces()
+        {
+            StringBuilder formulaString = new("4 * ( 1");
+            bool negative = true;
+            for (int i = 3; i < 10000; i += 2)
+            {
+                formulaString.Append((negative ? "-" : "+") + $"1/{i}");
+                negative = !negative;
+            }
+            formulaString.Append(')');
+            Formula f = new(formulaString.ToString());
+            double result = (double)f.Evaluate(s => 0);
+            Assert.AreEqual(3.1415926535, result, 1e-3);
+        }
+        // Equality and Hash tests
+        /// <summary>
+        /// Test basic equality of two identical formulas.
+        /// </summary>
+        [TestMethod]
+        [Timeout(2000)]
+        [TestCategory("31")]
+        public void Equals_TwoSameFormula_AreEqual()
+        {
+            Formula f1 = new("X1+X2");
+            Formula f2 = new("X1+X2");
+            Assert.IsTrue(f1.Equals(f2));
+        }
+        /// <summary>
+        /// Test that whitespace doesn't matter to equals.
+        /// </summary>
+        [TestMethod]
+        [Timeout(2000)]
+        [TestCategory("32")]
+        public void Equals_CheckWhitespace_SameEquation()
+        {
+            Formula f1 = new("X1+X2");
+            Formula f2 = new(" X1 + X2 ");
+            Assert.IsTrue(f1.Equals(f2));
+        }
+        /// <summary>
+        /// Test that different number notations don't matter to equals.
+        /// </summary>
+        [TestMethod]
+        [Timeout(2000)]
+        [TestCategory("33")]
+        public void Equals_DifferentNumberSyntaxes_SameFormula()
+        {
+            Formula f1 = new("2+X1*3.00");
+            Formula f2 = new("2.00+X1*3.0");
+            Assert.IsTrue(f1.Equals(f2));
+        }
+        /// <summary>
+        /// Test a little more complex string equality (canonical form).
+        /// </summary>
+        [TestMethod]
+        [Timeout(2000)]
+        [TestCategory("34")]
+        public void Equals_MoreComplexEquality_SameFormula()
+        {
+            Formula f1 = new("1e-2 + X5 + 17.00 * 19 ");
+            Formula f2 = new(" 0.0100 + X5+ 17 * 19.00000 ");
+            Assert.IsTrue(f1.Equals(f2));
+        }
+        /// <summary>
+        /// Test on null and empty string.
+        /// </summary>
+        [TestMethod]
+        [Timeout(2000)]
+        [TestCategory("35")]
+        public void Equals_NullAndEmptyString_NotEqual()
+        {
+            Formula f = new("2");
+            Assert.IsFalse(f.Equals(null));
+            Assert.IsFalse(f.Equals(string.Empty));
+        }
+        /// <summary>
+        /// Test on a different object type.
+        /// </summary>
+        [TestMethod]
+        [Timeout(2000)]
+        [TestCategory("36")]
+        public void Equals_NonFormulaObject_NotEqual()
+        {
+            Formula f = new("2");
+            Assert.IsFalse(f.Equals(new List<string>()));
+        }
+        /// <summary>
+        /// Test the == operator.
+        /// </summary>
+        [TestMethod]
+        [Timeout(2000)]
+        [TestCategory("37")]
+        public void OperatorDoubleEquals_TwoDifferentObjects_AreEqual()
+        {
+            Formula f1 = new("2");
+            Formula f2 = new("2");
+            Assert.IsTrue(f1 == f2);
+        }
+        /// <summary>
+        /// Test that == shows that two different formula are different.
+        /// </summary>
+        [TestMethod]
+        [Timeout(2000)]
+        [TestCategory("38")]
+        public void OperatorDoubleEquals_TwoDifferentFormula_NotEqual()
+        {
+            Formula f1 = new("2");
+            Formula f2 = new("5");
+            Assert.IsFalse(f1 == f2);
+        }
+        /// <summary>
+        /// Test the not equals operator.
+        /// </summary>
+        [TestMethod]
+        [Timeout(2000)]
+        [TestCategory("39")]
+        public void OperatorNotEqual_TwoEqualFormula_NotEqual()
+        {
+            Formula f1 = new("2");
+            Formula f2 = new("2");
+            Assert.IsFalse(f1 != f2);
+        }
+        /// <summary>
+        /// Test thenot equals operator on two different objects with different
+        //values.
+        /// </summary>
+        [TestMethod]
+        [Timeout(2000)]
+        [TestCategory("40")]
+    public void OperatorNotEqual_TwoDifferentFormulas_NotEqual()
+        {
+            Formula f1 = new("2");
+            Formula f2 = new("5");
+            Assert.IsTrue(f1 != f2);
+        }
+        /// <summary>
+        /// Test that the hashcode of two alike formulas are the same.
+        /// </summary>
+        [TestMethod]
+        [Timeout(2000)]
+        [TestCategory("41")]
+        public void GetHashCode_EqualFormulas_SameHashCodes()
+        {
+            Formula f1 = new("2*5");
+            Formula f2 = new("2*5");
+            Assert.IsTrue(f1.GetHashCode() == f2.GetHashCode());
+        }
+        /// <summary>
+        /// Technically the hashcodes could not be equal and still be valid,
+        /// extremely unlikely though. Check their implementation if this fails.
+        /// <para>
+        /// While it is very unlikely that two different formula will have
+        /// the same hashcode, it becomes ridiculously unlikely if we do
+        /// three formulas.
+        /// </para>
+        /// </summary>
+        [TestMethod]
+        [Timeout(2000)]
+        [TestCategory("42")]
+        public void GetHashCode_DifferentFormulas_DifferentCodes()
+        {
+            Formula f1 = new("2*5");
+            Formula f2 = new("3/8*2+(7)");
+            Formula f3 = new("1");
+            Assert.IsTrue(f1.GetHashCode() != f2.GetHashCode() ||
+            f2.GetHashCode() != f3.GetHashCode());
+        }
+        /// <summary>
+        /// Check to make sure that the hash code is computed on the
+        /// normalized form.
+        /// </summary>
+        [TestMethod]
+        [Timeout(2000)]
+        [TestCategory("43")]
+        public void GetHashCode_CheckCanonicalForms_AreSame()
+        {
+            Formula f1 = new("2 * 5 + 4.00 - x1");
+            Formula f2 = new("2*5+4-X1");
+            Assert.IsTrue(f1.GetHashCode() == f2.GetHashCode());
+        }
+        // A set of tests just to verify no regression has taken place!
+        /// <summary>
+        /// Test invalid formula (really a previous assignment verification).
+        /// </summary>
+        [TestMethod]
+        [Timeout(5000)]
+        [TestCategory("44")]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void FormulaConstructor_InvalidFormula_Throws()
+        {
+            _ = new Formula("+");
+        }
+        /// <summary>
+        /// Test extra operator at end.
+        /// </summary>
+        [TestMethod]
+        [Timeout(5000)]
+        [TestCategory("45")]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void FormulaConstructor_ExtraOperator_Throws()
+        {
+            _ = new Formula("2+5+");
+        }
+        /// <summary>
+        /// Test extra parentheses.
+        /// </summary>
+        [TestMethod]
+        [Timeout(5000)]
+        [TestCategory("46")]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void FormulaConstructor_ExtraParentheses_Throws()
+        {
+            _ = new Formula("2+5*7)");
+        }
+        /// <summary>
+        /// Test Invalid Variable Name.
+        /// </summary>
+        [TestMethod]
+        [Timeout(5000)]
+        [TestCategory("47")]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void FormulaConstructor_InvalidVariable_Throws()
+        {
+            _ = new Formula("xx");
+        }
+        /// <summary>
+        /// Test no implicit multiplication (5)(5) does not equal 25.
+        /// </summary>
+        [TestMethod]
+        [Timeout(5000)]
+        [TestCategory("48")]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void FormulaConstructor_NoImplicitMultiplication_Throws()
+        {
+            _ = new Formula("5+7+(5)8");
+        }
+        /// <summary>
+        /// Test that Empty Formula throws.
+        /// </summary>
+        [TestMethod]
+        [Timeout(5000)]
+        [TestCategory("49")]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void FormulaConstructor_Empty_Throws()
+        {
+            _ = new Formula(string.Empty);
+        }
+        /// <summary>
+        /// Test that ToString continues to work.
+        /// </summary>
+        [TestMethod]
+        [Timeout(5000)]
+        [TestCategory("50")]
+        public void FormulaToString_CreatesEqualFormula_EqualEachOther()
+        {
+            Formula f1 = new("(1+2*(3/4))");
+            Formula f2 = new(f1.ToString());
+            Assert.AreEqual(f1.Evaluate(s => 0), f2.Evaluate(s => 0));
+            Assert.AreEqual(f1.ToString(), f2.ToString());
+        }
+
+    }
