@@ -1,0 +1,522 @@
+namespace CS3500.DevelopmentTests;
+using CS3500.DependencyGraph;
+/// <summary>
+/// This is a test class for DependencyGraphTest and is intended
+/// to contain all DependencyGraphTest Unit Tests
+/// </summary>
+/// <author>
+///     Natalie Hicks, u1469883
+/// </author>
+/// <version>
+///     September 13th, 2024
+/// </version>
+[TestClass]
+public class DependencyGraphTests
+{
+    /// <summary>
+    /// Tests that a large dependency graph stays accurate after adding and removing
+    ///  nodes then readding the nodes. Checks that the final lists of dependents and
+    /// dependees contain the expected values.
+    /// </summary>
+    [TestMethod]
+    [Timeout(2000)] // 2 second run time limit
+    public void StressTest()
+    {
+        DependencyGraph dg = new();
+        // A bunch of strings to use
+        const int SIZE = 200;
+        string[] letters = new string[SIZE];
+        for (int i = 0; i < SIZE; i++)
+        {
+            letters[i] = string.Empty + ((char)('a' + i));
+        }
+        // The correct answers
+        HashSet<string>[] dependents = new HashSet<string>[SIZE];
+        HashSet<string>[] dependees = new HashSet<string>[SIZE];
+        for (int i = 0; i < SIZE; i++)
+        {
+            dependents[i] = [];
+            dependees[i] = [];
+        }
+        // Add a bunch of dependencies
+        for (int i = 0; i < SIZE; i++)
+        {
+            for (int j = i + 1; j < SIZE; j++)
+            {
+                dg.AddDependency(letters[i], letters[j]);
+                dependents[i].Add(letters[j]);
+                dependees[j].Add(letters[i]);
+            }
+        }
+        // Remove a bunch of dependencies
+        for (int i = 0; i < SIZE; i++)
+        {
+            for (int j = i + 4; j < SIZE; j += 4)
+            {
+                dg.RemoveDependency(letters[i], letters[j]);
+                dependents[i].Remove(letters[j]);
+                dependees[j].Remove(letters[i]);
+            }
+        }
+        // Add some back
+        for (int i = 0; i < SIZE; i++)
+        {
+            for (int j = i + 1; j < SIZE; j += 2)
+            {
+                dg.AddDependency(letters[i], letters[j]);
+                dependents[i].Add(letters[j]);
+                dependees[j].Add(letters[i]);
+            }
+        }
+        // Remove some more
+        for (int i = 0; i < SIZE; i += 2)
+        {
+            for (int j = i + 3; j < SIZE; j += 3)
+            {
+                dg.RemoveDependency(letters[i], letters[j]);
+                dependents[i].Remove(letters[j]);
+                dependees[j].Remove(letters[i]);
+            }
+        }
+        // Make sure everything is right
+        for (int i = 0; i < SIZE; i++)
+        {
+            Assert.IsTrue(dependents[i].SetEquals(new
+            HashSet<string>(dg.GetDependents(letters[i]))));
+            Assert.IsTrue(dependees[i].SetEquals(new
+            HashSet<string>(dg.GetDependees(letters[i]))));
+        }
+    }
+
+    // Add/Remove dependency tests
+
+
+    [TestMethod]
+    public void TestAddPairInGraph()
+    {
+        DependencyGraph dg = new DependencyGraph();
+        dg.AddDependency("A1", "B1");
+
+        int size = dg.Size;
+        Assert.AreEqual(1, size);
+    }
+
+    [TestMethod]
+    public void TestAddThenRemovePairInGraph()
+    {
+        // adds one dependency then deletes it
+        DependencyGraph dg = new DependencyGraph();
+        dg.AddDependency("A1", "B1");
+        dg.RemoveDependency("A1", "B1");
+
+        int size = dg.Size;
+        Assert.AreEqual(0, size);
+    }
+
+    [TestMethod]
+    public void TestAddLargeDependencyGraph()
+    {
+        // adds a large amount of dependencies
+        DependencyGraph dg = new DependencyGraph();
+        for (int i = 0; i < 1000; i++)
+        {
+            dg.AddDependency("A1", "B" + i);
+        }
+        int size = dg.Size;
+        Assert.AreEqual(1000, size);
+    }
+
+    [TestMethod]
+    public void TestRemoveOnEmptyDependencyGraph()
+    {
+        DependencyGraph dg = new DependencyGraph();
+        dg.RemoveDependency("A79", "F81");
+        int size = dg.Size;
+        Assert.AreEqual(0, size);
+    }
+
+    [TestMethod]
+    public void TestAddThenDeleteLargeDependencyGraph()
+    {
+        DependencyGraph dg = new DependencyGraph();
+        for (int i = 0; i < 1000; i++)
+        {
+            dg.AddDependency("A1", "B" + i);
+        }
+        for (int i = 0; i < 1000; i++)
+        {
+            dg.RemoveDependency("A1", "B" + i);
+        }
+        int size = dg.Size;
+        Assert.AreEqual(0, size);
+    }
+
+    //Size tests
+
+    [TestMethod]
+    public void TestSize1Pair()
+    {
+        DependencyGraph dg = new DependencyGraph();
+        dg.AddDependency("A2", "B2");
+
+
+        int size = dg.Size;
+        Assert.AreEqual(1, size);
+    }
+
+    [TestMethod]
+    public void TestSizeOneNodeHasManyDependents()
+    {
+        DependencyGraph dg = new DependencyGraph();
+        for (int i = 0; i < 50; i++)
+        {
+            dg.AddDependency("A1", "B" + i);
+        }
+
+
+        int size = dg.Size;
+        Assert.AreEqual(50, size);
+    }
+
+    [TestMethod]
+    public void TestSizeAddAndDeleteDependentsManually()
+    {
+        DependencyGraph dg = new();
+        for (int i = 0; i < 50; i++)
+        {
+            dg.AddDependency("A1", "B" + i);
+        }
+        for (int i = 0; i < 50; i++)
+        {
+            dg.RemoveDependency("A1", "B" + i);
+        }
+
+
+        int size = dg.Size;
+        Assert.AreEqual(0, size);
+    }
+
+
+    //HasDependees and HasDependents tests
+
+    [TestMethod]
+    public void TestHasDependentsSimple_True()
+    {
+        DependencyGraph dg = new();
+
+        dg.AddDependency("A1", "B1");
+
+        Assert.IsTrue(dg.HasDependents("A1"));
+    }
+
+    [TestMethod]
+    public void TestHasDependentsSimple_False()
+    {
+        DependencyGraph dg = new();
+
+        dg.AddDependency("A1", "B1");
+
+        Assert.IsFalse(dg.HasDependents("B1"));
+    }
+
+    [TestMethod]
+    public void TestHasDependeeSimple_True()
+    {
+        DependencyGraph dg = new();
+
+        dg.AddDependency("A1", "B1");
+
+        Assert.IsTrue(dg.HasDependees("B1"));
+    }
+
+    [TestMethod]
+    public void TestHasDependeeSimple_False()
+    {
+        DependencyGraph dg = new();
+
+        dg.AddDependency("A1", "B1");
+
+        Assert.IsFalse(dg.HasDependees("A1"));
+    }
+
+    [TestMethod]
+    public void TestHasDependentsAfterDeletingDependencies_False()
+    {
+        DependencyGraph dg = new();
+        for (int i = 0; i < 50; i++)
+        {
+            dg.AddDependency("A1", "B" + i);
+        }
+        for (int i = 0; i < 50; i++)
+        {
+            dg.RemoveDependency("A1", "B" + i);
+        }
+
+        Assert.IsFalse(dg.HasDependents("A1"));
+    }
+
+    [TestMethod]
+    public void TestHasDependentsAfterDeletingSomeDependencies_True()
+    {
+        DependencyGraph dg = new();
+        for (int i = 0; i < 50; i++)
+        {
+            dg.AddDependency("A1", "B" + i);
+        }
+        for (int i = 0; i < 30; i++)
+        {
+            dg.RemoveDependency("A1", "B" + i);
+        }
+
+        Assert.IsTrue(dg.HasDependents("A1"));
+    }
+
+    [TestMethod]
+    public void TestHasDependeesAfterDeletingDependencies_False()
+    {
+        DependencyGraph dg = new();
+        for (int i = 0; i < 50; i++)
+        {
+            dg.AddDependency("A1", "B" + i);
+        }
+        for (int i = 0; i < 50; i++)
+        {
+            dg.RemoveDependency("A1", "B" + i);
+        }
+
+        Assert.IsFalse(dg.HasDependees("A1"));
+    }
+
+    [TestMethod]
+    public void TestHasDependeesAfterDeletingSomeDependencies_True()
+    {
+        DependencyGraph dg = new();
+        for (int i = 0; i < 50; i++)
+        {
+            dg.AddDependency("A1", "B" + i);
+        }
+        for (int i = 0; i < 30; i++)
+        {
+            dg.RemoveDependency("A1", "B" + i);
+        }
+
+        Assert.IsTrue(dg.HasDependees("B49"));
+    }
+
+
+    //GetDependees and GetDependents tests
+
+    [TestMethod]
+    public void TestGetDependentsOneNodeHasManyDependents()
+    {
+        DependencyGraph dg = new DependencyGraph();
+        for (int i = 0; i < 50; i++)
+        {
+            dg.AddDependency("A1", "B" + i);
+        }
+        HashSet<string> nodes = (HashSet<string>)dg.GetDependents("A1");
+
+        for (int i = 0; i < 50; i++)
+        {
+            Assert.IsTrue(nodes.Contains("B" + i));
+        }
+
+    }
+
+    [TestMethod]
+    public void TestGetDependentsNoDependents()
+    {
+        DependencyGraph dg = new DependencyGraph();
+        for (int i = 0; i < 50; i++)
+        {
+            dg.AddDependency("A1", "B" + i);
+        }
+        for (int i = 0; i < 50; i++)
+        {
+            dg.RemoveDependency("A1", "B" + i);
+        }
+        HashSet<string> nodes = (HashSet<string>)dg.GetDependents("A1");
+
+        Assert.IsTrue(nodes.Count == 0);
+    }
+
+    /// <summary>
+    ///     Tests that a new dependeny graph with no dependecies allows for GetDependents to be called
+    ///     and simply returns an empty HashSet.
+    /// </summary>
+    [TestMethod]
+    public void TestGetDependentsNewDependencyGraph()
+    {
+        DependencyGraph dg = new DependencyGraph();
+
+        HashSet<string> nodes = (HashSet<string>)dg.GetDependents("A102929");
+
+        Assert.IsTrue(nodes.Count.Equals(0));
+
+    }
+
+    /// <summary>
+    ///     Tests that a new dependeny graph with no dependecies allows for GetDependees to be called
+    ///     and returns an empty HashSet.
+    /// </summary>
+    [TestMethod]
+    public void TestGetDependeesNewDependencyGraph()
+    {
+        DependencyGraph dg = new DependencyGraph();
+
+        HashSet<string> nodes = (HashSet<string>)dg.GetDependees("A1474");
+
+        Assert.IsTrue(nodes.Count.Equals(0));
+
+    }
+
+    [TestMethod]
+    public void TestGetDependees1DependencyButNoDependees()
+    {
+        DependencyGraph dg = new DependencyGraph();
+        dg.AddDependency("A1", "B1");
+        HashSet<string> nodes = (HashSet<string>)dg.GetDependees("A1");
+
+        Assert.IsTrue(nodes.Count.Equals(0));
+
+    }
+
+    [TestMethod]
+    public void TestGetDependents1DependencyButNoDependees()
+    {
+        DependencyGraph dg = new DependencyGraph();
+        dg.AddDependency("A1", "B1");
+        HashSet<string> nodes = (HashSet<string>)dg.GetDependents("B1");
+
+        Assert.IsTrue(nodes.Count.Equals(0));
+
+    }
+
+    [TestMethod]
+    public void TestGetDependeeLastNodeAdded()
+    {
+        DependencyGraph dg = new DependencyGraph();
+        for (int i = 0; i < 50; i++)
+        {
+            dg.AddDependency("A1", "B" + i);
+        }
+        HashSet<string> nodes = (HashSet<string>)dg.GetDependees("B49");
+
+        Assert.IsTrue(nodes.Contains("A1"));
+        Assert.IsTrue(nodes.Count == 1);
+    }
+
+
+
+
+    //ReplaceDependees and ReplaceDependents tests
+
+    /// <summary>
+    ///     Tests that adding many dependents to a single dependee node then replacing its dependents with a small
+    ///     amount of dependents works. Checks to make sure that the old dependents of the dependee no longer have
+    ///     the dependee in their dependees set.
+    /// </summary>
+    [TestMethod]
+    public void TestReplaceDependents()
+    {
+        DependencyGraph dg = new DependencyGraph();
+        for (int i = 0; i < 50; i++)
+        {
+            dg.AddDependency("A1", "B" + i);
+        }
+        HashSet<string> newDependents = new HashSet<string>() { "X2", "Z2", "Y5" };
+        dg.ReplaceDependents("A1", newDependents);
+
+        HashSet<string> nodes = (HashSet<string>)dg.GetDependents("A1");
+
+        Assert.IsTrue(nodes.Contains("X2") && nodes.Contains("Z2") && nodes.Contains("Y5"));
+        Assert.IsTrue(nodes.Count == 3);
+
+        HashSet<string> previousNodeDependent = (HashSet<string>)dg.GetDependees("B3");
+        Assert.IsFalse(previousNodeDependent.Contains("A1"));
+    }
+
+    [TestMethod]
+    public void TestReplaceDependentsSmallDependencyGraph()
+    {
+        DependencyGraph dg = new DependencyGraph();
+        dg.AddDependency("A1", "B1");
+
+        HashSet<string> newDependents = new HashSet<string>() { "X2" };
+        dg.ReplaceDependents("A1", newDependents);
+
+        HashSet<string> nodes = (HashSet<string>)dg.GetDependents("A1");
+
+        Assert.IsTrue(nodes.Contains("X2"));
+        Assert.IsTrue(nodes.Count == 1);
+
+        HashSet<string> previousNodeDependent = (HashSet<string>)dg.GetDependees("B1");
+        Assert.IsFalse(previousNodeDependent.Contains("A1"));
+    }
+
+    /// <summary>
+    ///     Tests that adding many dependents to a single dependee node then replacing one of the dependent's dependee
+    ///     list works. Checks that the old dependees no longer have this node as a dependent.
+    /// </summary>
+    [TestMethod]
+    public void TestReplaceDependees()
+    {
+        DependencyGraph dg = new DependencyGraph();
+        for (int i = 0; i < 50; i++)
+        {
+            dg.AddDependency("A1", "B" + i);
+        }
+        HashSet<string> newDependees = new HashSet<string>() { "C7", "D6" };
+        dg.ReplaceDependees("B49", newDependees);
+
+        HashSet<string> nodes = (HashSet<string>)dg.GetDependees("B49");
+
+        Assert.IsTrue(nodes.Contains("C7") && nodes.Contains("D6"));
+        Assert.IsTrue(nodes.Count == 2);
+
+        HashSet<string> previousNodeDependee = (HashSet<string>)dg.GetDependents("A1");
+        Assert.IsFalse(previousNodeDependee.Contains("B49"));
+    }
+
+    /// <summary>
+    ///     Tests that replacing the dependees of a node that has many dependees works. Checks that the previous
+    ///     dependees no longer have the node as a dependent.
+    /// </summary>
+    [TestMethod]
+    public void TestReplaceDependeesOriginallyManyDependees()
+    {
+        DependencyGraph dg = new DependencyGraph();
+        for (int i = 0; i < 50; i++)
+        {
+            dg.AddDependency("B" + i, "A1");
+        }
+        HashSet<string> newDependees = new HashSet<string>() { "C7", "D6" };
+        dg.ReplaceDependees("A1", newDependees);
+
+        HashSet<string> nodes = (HashSet<string>)dg.GetDependees("A1");
+
+        Assert.IsTrue(nodes.Contains("C7") && nodes.Contains("D6"));
+        Assert.IsTrue(nodes.Count == 2);
+
+        HashSet<string> previousNodeDependee = (HashSet<string>)dg.GetDependents("B30");
+        Assert.IsFalse(previousNodeDependee.Contains("A1"));
+    }
+
+    [TestMethod]
+    public void TestReplaceDependeesEmptyNewDependeesSet()
+    {
+        DependencyGraph dg = new DependencyGraph();
+        dg.AddDependency("B1", "A1");
+        HashSet<string> newDependees = new HashSet<string>() { };
+        dg.ReplaceDependees("A1", newDependees);
+
+        HashSet<string> nodes = (HashSet<string>)dg.GetDependees("A1");
+
+        Assert.IsFalse(nodes.Contains("B1"));
+        Assert.IsTrue(nodes.Count == 0);
+
+        HashSet<string> previousNodeDependee = (HashSet<string>)dg.GetDependents("B1");
+        Assert.IsFalse(previousNodeDependee.Contains("A1"));
+    }
+
+}
