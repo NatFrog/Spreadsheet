@@ -1,0 +1,2745 @@
+// CS-3500, University of Utah
+// <author
+// Natalie Hicks
+// </author>
+// <version>
+// October 18th, 2024
+// </version>
+
+
+using CS3500.Formula;
+using CS3500.Spreadsheet;
+
+namespace SpreadsheetTests
+{
+    /// <summary>
+    /// Test class that tests all the methods and functionality of a Spreadsheet.
+    /// </summary>
+    [TestClass]
+    public class SpreadsheetTests
+    {
+
+//GetNamesOfAllNonemptyCellS tests----------------------------
+        
+//        [TestMethod]
+//        public void GetNamesSimple()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("b1", "fire");
+//            s.SetContentsOfCell("A1", "fire");
+//            Assert.AreEqual(2.0, s.GetNamesOfAllNonemptyCells().Count);
+//        }
+
+//        [TestMethod]
+//        public void GetNamesOfManyCells()
+//        {
+//             Spreadsheet s = new Spreadsheet();
+
+//            s.SetContentsOfCell("A0", "1.0");
+
+//            string contents;
+//            for (int i = 0; i < 100; i++)
+//            {
+
+//                int next = i + 1;
+//                contents = "=A" + i;
+
+//                s.SetContentsOfCell("A" + next, contents);
+//            }
+           
+//            Assert.AreEqual(51, s.SetContentsOfCell("A50", "2.0").Count);
+//            Assert.IsTrue(s.GetNamesOfAllNonemptyCells().Count == 101);
+
+//        }
+
+//        [TestMethod]
+//        public void GetNames_EmptySpreadsheet()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+            
+//            Assert.AreEqual(0.0, s.GetNamesOfAllNonemptyCells().Count);
+//        }
+
+//        [TestMethod]
+//        public void GetNames_AfterSettingCellToEmptyString()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("b1", "fire");
+//            s.SetContentsOfCell("A1", "fire");
+//            s.SetContentsOfCell("A1", "");
+//            Assert.AreEqual(1.0, s.GetNamesOfAllNonemptyCells().Count);
+//        }
+    
+
+//        //GetCellContents tests----------------------------
+//        [TestMethod]
+//        public void TestGetCellContents_WorksWith1Cell()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("b1", "fire");
+//            Assert.AreEqual("fire", s.GetCellContents("b1"));
+//        }
+
+//        [TestMethod]
+//        [ExpectedException(typeof(InvalidNameException))]
+//        public void TestGetCellContents_InvalidName()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("6492392c", "fire");
+//        }
+
+//        [TestMethod]
+//        public void TestGetCellContents_Formula()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("b1", "=20+A3");
+//            Assert.AreEqual("20+A3", s.GetCellContents("B1").ToString());
+//        }
+
+//        [TestMethod]
+//        public void TestGetCellContents_EmptyCell()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            Assert.IsTrue(s.GetCellContents("b1").Equals(string.Empty));
+//        }
+
+//        [TestMethod]
+//        [ExpectedException(typeof(InvalidNameException))]
+//        public void TestGetCellContents_InvalidNameException()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.GetCellContents("627832823hhh").Equals(string.Empty);
+//        }
+
+
+//        //SetContentsOfCell  tests-------------------
+
+//        [TestMethod]
+//        public void TestSetCellContents_DoubleWorks()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("A1", "445");
+            
+//            Assert.IsTrue("445".Equals(s.GetCellContents("A1").ToString()));
+//        }
+
+//        [TestMethod]
+//        public void TestSetCellContents_SettingEmptyCellContentsThenSettingToEmptyString()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("A1", "hi");
+//            s.SetContentsOfCell("A1", string.Empty);
+
+//            Assert.IsTrue(s.GetCellContents("A1").Equals(string.Empty));
+//        }
+
+//        [TestMethod]
+//        public void TestSetCellContents_FormulaWorks()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            Formula f = new Formula("2+3");
+//            s.SetContentsOfCell("A1", "=2+3");
+//            Assert.IsTrue(s.GetCellContents("A1").Equals(f));
+//        }
+
+//        [TestMethod]
+//        public void TestSetCellContents_ExpectedListReturns()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("A1", "3.0");
+
+//            s.SetContentsOfCell("A2", "=A1+2");
+
+//            List<string> expected = new List<string>() { "A1", "A2"};
+
+//            Assert.AreEqual(expected.ToString(), s.SetContentsOfCell("A1", "8.0").ToString());
+//        }
+
+//        [TestMethod]
+//        public void TestSetCellContents_ReturnsIndirectDependents()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+   
+//            s.SetContentsOfCell("A2", "3.0");
+
+//            s.SetContentsOfCell("A3", "=A2+2");
+//            s.SetContentsOfCell("A4", "=A3-2");
+//            s.SetContentsOfCell("A5", "=A4+4");
+
+//            List<string> result = s.SetContentsOfCell("A2", "8.0").ToList();
+
+//            Assert.IsTrue(result.Count == 4);
+//            Assert.IsTrue(result.Contains("A2") && result.Contains("A3") && result.Contains("A4") && result.Contains("A4"));
+//        }
+
+//        [TestMethod]
+//        public void TestSetCellContents_GetsRidOfDependeesWhenFormulaChangedToString()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+     
+//            s.SetContentsOfCell("A2", "3.0");
+
+//            s.SetContentsOfCell("A3", "=A2+2");
+//            s.SetContentsOfCell("A4", "=A3-2");
+//            s.SetContentsOfCell("A5", "=A4+4");
+
+//            s.SetContentsOfCell("A4", "newValue");
+
+//            List<string> expected = new List<string>() { "A2", "A3"};
+
+//            Assert.IsTrue(s.SetContentsOfCell("A2", "hello").Count == 2);
+//            List<string> result = s.SetContentsOfCell("A2", "8.0").ToList();
+//            Assert.IsTrue(result.Contains("A2") && result.Contains("A3"));
+//        }
+
+//        [TestMethod]
+//        public void TestSetCellContents_AddsDependentSimple()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            //Formula f1 = new Formula("A2+2");
+
+//            s.SetContentsOfCell("A2", "3.0");
+
+//            s.SetContentsOfCell("A3", "=A2+2");
+            
+//            List<string> expected = new List<string>() { "A2", "A3"};
+
+//            Assert.IsTrue(s.SetContentsOfCell("A2", "hello").Count == 2);
+//            List<string> result = s.SetContentsOfCell("A2", "8.0").ToList();
+
+//            Assert.IsTrue(result.Contains("A2") && result.Contains("A3"));
+            
+           
+//        }
+
+//        [TestMethod]
+//        [ExpectedException(typeof(CircularException))]
+//        public void TestSetCellContents_Formula_CircularException()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            //Formula f1 = new Formula("A2+2");
+//            //Formula f2 = new Formula("A1+2");
+
+//            s.SetContentsOfCell("A1", "=A2+2");
+
+//            s.SetContentsOfCell("A2", "=A1+2");
+
+//            s.SetContentsOfCell("A2", "hello");
+            
+//        }
+
+//        [TestMethod]
+//        [ExpectedException(typeof(CircularException))]
+//        public void TestSetCellContents_Formula_CircularExceptionAfterChanging()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            //Formula f1 = new Formula("A2+2");
+//            //Formula f2 = new Formula("A1+2");
+
+//            s.SetContentsOfCell("A1", "5.0");
+
+//            s.SetContentsOfCell("A2", "=A1+2");
+
+//            s.SetContentsOfCell("A1", "=A2+2");
+
+//        }
+
+//        [TestMethod]
+//        public void TestSetCellContents_Formula_CircularException_DependeesAndContentsNotChanged()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            //Formula f1 = new Formula("A2+2");
+//            //Formula f2 = new Formula("A1+2");
+
+//            s.SetContentsOfCell("A1", "5.0");
+
+//            s.SetContentsOfCell("A2", "=A1+2");
+
+//            try
+//            {
+//                s.SetContentsOfCell("A1", "=A2+2");
+//            }
+//            catch (CircularException)
+//            {
+//                Assert.AreEqual(s.GetCellContents("A1"), 5.0);
+//                Assert.AreEqual(s.SetContentsOfCell("A1", "3.0").Count, 2.0);
+//            }
+
+
+//        }
+
+//        [TestMethod]
+//        public void TestSetCellContents_ChangingFormulaParentCellToString()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            //Formula f1 = new Formula("A3+2");
+//            //Formula f2 = new Formula("A1+2");
+
+//            s.SetContentsOfCell("A1", "=A3+2");
+
+//            s.SetContentsOfCell("A2", "=A1+2");
+
+//            Assert.IsTrue(s.SetContentsOfCell("A1", "hello").Count == 2);
+
+//        }
+
+//        [TestMethod]
+//        public void TestSetCellContents_ChangingContentsToEmptyString()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            //Formula f1 = new Formula("A3+2");
+//            //Formula f2 = new Formula("A1+2");
+
+//            s.SetContentsOfCell("A1", "=A3+2");
+
+//            s.SetContentsOfCell("A2", "=A1+2");
+
+//            s.SetContentsOfCell("A2", "");
+
+//            Assert.IsTrue(s.SetContentsOfCell("A1", "hello").Count == 1);
+//            Assert.AreEqual(1, s.GetNamesOfAllNonemptyCells().Count);
+
+//        }
+
+//        [TestMethod]
+//        public void TestSetCellContents_FormulaLotsOfIndirectDependents()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+
+//            s.SetContentsOfCell("A0", "1.0");
+        
+//            string contents;
+//            for (int i = 0; i < 100; i++)
+//            {
+
+//                int next = i + 1;
+//                contents = "=A" + i;
+
+//                s.SetContentsOfCell("A"+ next, contents);
+//            }
+
+//            Assert.AreEqual(s.SetContentsOfCell("A0", "2.0").Count, 101);
+//            Assert.IsTrue(s.GetNamesOfAllNonemptyCells().Count == 101);
+
+//        }
+
+//        // Test invalid name exception
+//        [TestMethod]
+//        [ExpectedException(typeof(InvalidNameException))]
+//        public void TestSetCellContents_InvalidNameException_Double()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+            
+//            s.SetContentsOfCell("788998Teeth", "2.9");
+
+
+//        }
+
+//        // Test invalid name exception
+//        [TestMethod]
+//        [ExpectedException(typeof(InvalidNameException))]
+//        public void TestSetCellContents_InvalidNameException_String()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("788998Teeth", "CAT");
+//        }
+
+       
+//        [TestMethod]
+//        [ExpectedException(typeof(InvalidNameException))]
+//        public void TestSetCellContents_InvalidNameException_Formula()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            //Formula f1 = new Formula("A3+2");
+
+//            s.SetContentsOfCell("788998Teeth", "=A3+2");
+//        }
+
+//        //PS5 grading tests--------------------------------------------------------------
+
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("2")]
+//        [ExpectedException(typeof(InvalidNameException))]
+//        public void GetCellContents_InvalidName_Throws()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.GetCellContents("1AA");
+//        }
+
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("3")]
+//        public void GetCellContents_EmptyCell_Works()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            Assert.AreEqual("", s.GetCellContents("A2"));
+//        }
+
+//        // SETTING CELL TO A DOUBLE
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("5")]
+//        [ExpectedException(typeof(InvalidNameException))]
+//        public void SetCellContents_InvalidNameDouble_Throws()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("1A1A", "1.5");
+//        }
+
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("6")]
+//        public void SetAndGet_Double_Works()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("Z7", "1.5");
+//            Assert.AreEqual(1.5, (double)s.GetCellContents("Z7"), 1e-9);
+//        }
+
+//        // SETTING CELL TO A STRING
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("9")]
+//        [ExpectedException(typeof(InvalidNameException))]
+//        public void SetCellContents_InvalidNameString_Throws()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("1AZ", "hello");
+//        }
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("10")]
+//        public void SetAndGet_String_Works()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("Z7", "hello");
+//            Assert.AreEqual("hello", s.GetCellContents("Z7"));
+//        }
+//        // SETTING CELL TO A FORMULA
+
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("13")]
+//        [ExpectedException(typeof(InvalidNameException))]
+//        public void SetCellContents_InvalidNameFormula_Throws()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("1AZ", "=2");
+//        }
+
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("14")]
+//        public void SetAndGet_Formula_Works()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("Z7", "=3");
+//            Formula f = (Formula)s.GetCellContents("Z7");
+//            Assert.AreEqual(new Formula("3"), f);
+//            Assert.AreNotEqual(new Formula("2"), f);
+//        }
+
+//        // CIRCULAR FORMULA DETECTION
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("15")]
+//        [ExpectedException(typeof(CircularException))]
+//        public void SetCellContents_Circular_Throws()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("A1", "=A2");
+//            s.SetContentsOfCell("A2", "=A1");
+//        }
+
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("16")]
+//        [ExpectedException(typeof(CircularException))]
+//        public void SetCellContents_IndirectCircular_Throws()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("A1", "=A2+A3");
+//            s.SetContentsOfCell("A3", "=A4+A5");
+//            s.SetContentsOfCell("A5", "=A6+A7");
+//            s.SetContentsOfCell("A7", "=A1+A1");
+//        }
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("17")]
+//        [ExpectedException(typeof(CircularException))]
+//        public void SetCellContents_Circular_UndoesCellChanges()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            try
+//            {
+//                s.SetContentsOfCell("A1", "=A2+A3");
+//                s.SetContentsOfCell("A2", "15");
+//                s.SetContentsOfCell("A3", "30");
+//                s.SetContentsOfCell("A2", "=A3*A1");
+//            }
+//            catch (CircularException)
+//            {
+//                Assert.AreEqual(15, (double)s.GetCellContents("A2"), 1e-9);
+//                throw; // C# shortcut to rethrow the same exception that was caught
+//            }
+//        }
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("17b")]
+//        [ExpectedException(typeof(CircularException))]
+//        public void SetCellContents_Circular_UndoesGraphChanges()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            try
+//            {
+//                s.SetContentsOfCell("A1", "=A2");
+//                s.SetContentsOfCell("A2", "=A1");
+//            }
+//            catch (CircularException)
+//            {
+//                Assert.AreEqual("", s.GetCellContents("A2"));
+//                Assert.IsTrue(new HashSet<string>
+//{ "A1" }.SetEquals(s.GetNamesOfAllNonemptyCells()));
+//                throw; // C# shortcut to rethrow the same exception that was caught
+//            }
+//        }
+//        // NONEMPTY CELLS
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("18")]
+//        public void GetNames_Empty_Works()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            Assert.IsFalse(s.GetNamesOfAllNonemptyCells().GetEnumerator().MoveNext());
+//        }
+
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("19")]
+//        public void GetNames_ExplicitlySetEmpty_Works()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("B1", "");
+//            Assert.IsFalse(s.GetNamesOfAllNonemptyCells().GetEnumerator().MoveNext());
+//        }
+
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("20")]
+//        public void GetNames_NonemptyCellString_Works()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("B1", "hello");
+//            Assert.IsTrue(new
+//            HashSet<string>(s.GetNamesOfAllNonemptyCells()).SetEquals(new HashSet<string>()
+//            { "B1" }));
+//        }
+
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("21")]
+//        public void GetNames_NonemptyCellDouble_Works()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("B1", "52.25");
+//            Assert.IsTrue(new
+//            HashSet<string>(s.GetNamesOfAllNonemptyCells()).SetEquals(new HashSet<string>()
+//            { "B1" }));
+//        }
+
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("22")]
+//        public void GetNames_NonemptyCellFormula_Works()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("B1", "=3.5");
+//            Assert.IsTrue(new
+//            HashSet<string>(s.GetNamesOfAllNonemptyCells()).SetEquals(new HashSet<string>()
+//            { "B1" }));
+//        }
+
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("23")]
+//        public void GetNames_NonemptyCells_Works()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("A1", "17.2");
+//            s.SetContentsOfCell("C1", "hello");
+//            s.SetContentsOfCell("B1", "=3.5");
+//            Assert.IsTrue(new
+//            HashSet<string>(s.GetNamesOfAllNonemptyCells()).SetEquals(new HashSet<string>()
+//            { "A1", "B1", "C1" }));
+//        }
+
+//        // RETURN VALUE OF SET CELL CONTENTS
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("24")]
+//        public void SetCellContents_Double_NoFalseDependencies()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("B1", "hello");
+//            s.SetContentsOfCell("C1", "=5");
+//            Assert.IsTrue(s.SetContentsOfCell("A1", "17.2").SequenceEqual(new
+//            List<string>() { "A1" }));
+//        }
+
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("25")]
+//        public void SetCellContents_String_NoFalseDependencies()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("A1", "17.2");
+//            s.SetContentsOfCell("C1", "=5");
+//            Assert.IsTrue(s.SetContentsOfCell("B1", "hello").SequenceEqual(new
+//            List<string>() { "B1" }));
+//        }
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("26")]
+//        public void SetCellContents_Formula_NoFalseDependencies()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("A1", "17.2");
+//            s.SetContentsOfCell("B1", "hello");
+//            Assert.IsTrue(s.SetContentsOfCell("C1", "=5").SequenceEqual(new List<string>() { "C1" }));
+//        }
+
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("27")]
+//        public void SetCellContents_ChainDependencies_Works()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("A1", "=A2+A3");
+//            s.SetContentsOfCell("A2", "6");
+//            s.SetContentsOfCell("A3", "=A2+A4");
+//            s.SetContentsOfCell("A4", "=A2+A5");
+//            Assert.IsTrue(s.SetContentsOfCell("A5", "82.5").SequenceEqual(new
+//            List<string>() { "A5", "A4", "A3", "A1" }));
+//        }
+//        // CHANGING CELLS
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("28")]
+//        public void SetCellContents_FormulaToDouble_Works()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("A1", "=A2+A3");
+//            s.SetContentsOfCell("A1", "2.5");
+//            Assert.AreEqual(2.5, (double)s.GetCellContents("A1"), 1e-9);
+//        }
+
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("29")]
+//        public void SetCellContents_FormulaToString_Works()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("A1", "=A2+A3");
+//            s.SetContentsOfCell("A1", "Hello");
+//            Assert.AreEqual("Hello", (string)s.GetCellContents("A1"));
+//        }
+
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("30")]
+//        public void SetCellContents_StringToFormula_Works()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("A1", "Hello");
+//            s.SetContentsOfCell("A1", "=23");
+//            Assert.AreEqual(new Formula("23"), (Formula)s.GetCellContents("A1"));
+//            Assert.AreNotEqual(new Formula("24"), (Formula)
+//            s.GetCellContents("A1"));
+//        }
+
+//        //STRESS TESTS
+//       [TestMethod(), Timeout(2000)]
+//        [TestCategory("31")]
+//        public void TestStress1()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("A1", "=B1+B2");
+//            s.SetContentsOfCell("B1", "=C1-C2");
+//            s.SetContentsOfCell("B2", "=C3*C4");
+//            s.SetContentsOfCell("C1", "=D1*D2");
+//            s.SetContentsOfCell("C2", "=D3*D4");
+//            s.SetContentsOfCell("C3", "=D5*D6");
+//            s.SetContentsOfCell("C4", "=D7*D8");
+//            s.SetContentsOfCell("D1", "=E1");
+//            s.SetContentsOfCell("D2", "=E1");
+//            s.SetContentsOfCell("D3", "=E1");
+//            s.SetContentsOfCell("D4", "=E1");
+//            s.SetContentsOfCell("D5", "=E1");
+//            s.SetContentsOfCell("D6", "=E1");
+//            s.SetContentsOfCell("D7", "=E1");
+//            s.SetContentsOfCell("D8", "=E1");
+//            IList<String> cells = s.SetContentsOfCell("E1", "0");
+//            Assert.IsTrue(new HashSet<string>() { "A1", "B1", "B2", "C1", "C2", "C3",
+//"C4", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "E1" }.SetEquals(cells));
+//        }
+
+//        //Repeated for extra weight
+//       [TestMethod(), Timeout(2000)]
+//        [TestCategory("32")]
+//        public void TestStress1a()
+//        {
+//            TestStress1();
+//        }
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("33")]
+//        public void TestStress1b()
+//        {
+//            TestStress1();
+//        }
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("34")]
+//        public void TestStress1c()
+//        {
+//            TestStress1();
+//        }
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("35")]
+//        public void TestStress2()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            ISet<String> cells = new HashSet<string>();
+//            for (int i = 1; i < 200; i++)
+//            {
+//                cells.Add("A" + i);
+//                Assert.IsTrue(cells.SetEquals(s.SetContentsOfCell("A" + i, "=A" + (i + 1))));
+//            }
+//        }
+
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("36")]
+//        public void TestStress2a()
+//        {
+//            TestStress2();
+//        }
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("37")]
+//        public void TestStress2b()
+//        {
+//            TestStress2();
+//        }
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("38")]
+//        public void TestStress2c()
+//        {
+//            TestStress2();
+//        }
+
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("39")]
+//        public void TestStress3()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            for (int i = 1; i < 200; i++)
+//            {
+//                s.SetContentsOfCell("A" + i, "=A" + (i + 1));
+//            }
+//            try
+//            {
+//                s.SetContentsOfCell("A150", "=A50");
+//                Assert.Fail();
+//            }
+//            catch (CircularException)
+//            {
+//            }
+//        }
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("40")]
+//        public void TestStress3a()
+//        {
+//            TestStress3();
+//        }
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("41")]
+//        public void TestStress3b()
+//        {
+//            TestStress3();
+//        }
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("42")]
+//        public void TestStress3c()
+//        {
+//            TestStress3();
+//        }
+
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("43")]
+//        public void TestStress4()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            for (int i = 0; i < 500; i++)
+//            {
+//                s.SetContentsOfCell("A1" + i, "=A1" + (i + 1));
+//            }
+//            LinkedList<string> firstCells = new LinkedList<string>();
+//            LinkedList<string> lastCells = new LinkedList<string>();
+//            for (int i = 0; i < 250; i++)
+//            {
+//                firstCells.AddFirst("A1" + i);
+//                lastCells.AddFirst("A1" + (i + 250));
+//            }
+//            Assert.IsTrue(s.SetContentsOfCell("A1249", "25.0").SequenceEqual(firstCells)
+//            );
+//            Assert.IsTrue(s.SetContentsOfCell("A1499", "0").SequenceEqual(lastCells));
+//        }
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("44")]
+//        public void TestStress4a()
+//        {
+//            TestStress4();
+//        }
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("45")]
+//        public void TestStress4b()
+//        {
+//            TestStress4();
+//        }
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("46")]
+//        public void TestStress4c()
+//        {
+//            TestStress4();
+//        }
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("47")]
+//        public void TestStress5()
+//        {
+//            RunRandomizedTest(47, 2519);
+//        }
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("48")]
+//        public void TestStress6()
+//        {
+//            RunRandomizedTest(48, 2521);
+//        }
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("49")]
+//        public void TestStress7()
+//        {
+//            RunRandomizedTest(49, 2526);
+//        }
+//        [TestMethod(), Timeout(2000)]
+//        [TestCategory("50")]
+//        public void TestStress8()
+//        {
+//            RunRandomizedTest(50, 2521);
+//        }
+//        /// <summary>
+//        /// Sets random contents for a random cell 10000 times
+//        /// </summary>
+//        /// <param name="seed">Random seed</param>
+//        /// <param name="size">The known resulting spreadsheet size, given the
+//        /// seed</param>
+//public void RunRandomizedTest(int seed, int size)
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            Random rand = new Random(seed);
+//            for (int i = 0; i < 10000; i++)
+//            {
+//                try
+//                {
+//                    switch (rand.Next(3))
+//                    {
+//                        case 0:
+//                            s.SetContentsOfCell(randomName(rand), "3.14");
+//                            break;
+//                        case 1:
+//                            s.SetContentsOfCell(randomName(rand), "hello");
+//                            break;
+//                        case 2:
+//                            s.SetContentsOfCell(randomName(rand), randomFormula(rand));
+//                            break;
+//                    }
+//                }
+//                catch (CircularException)
+//                {
+//                }
+//            }
+//            ISet<string> set = new HashSet<string>(s.GetNamesOfAllNonemptyCells());
+//            Assert.AreEqual(size, set.Count);
+//        }
+
+//    /// <summary>
+//    /// Generates a random cell name with a capital letter and number between 1 - 99
+//    /// </summary>
+//    /// <param name="rand"></param>
+//    /// <returns></returns>
+//    private string randomName(Random rand)
+//    {
+//                return "ABCDEFGHIJKLMNOPQRSTUVWXYZ".Substring(rand.Next(26), 1) +
+//                (rand.Next(99) + 1);
+//            }
+//            /// <summary>
+//            /// Generates a random Formula
+//            /// </summary>
+//            /// <param name="rand"></param>
+//            /// <returns></returns>
+//            private string randomFormula(Random rand)
+//            {
+//                string f = randomName(rand);
+//                for (int i = 0; i < 10; i++)
+//                {
+//                    switch (rand.Next(4))
+//                    {
+//                        case 0:
+//                            f += "+";
+//                            break;
+//                        case 1:
+//                            f += "-";
+//                            break;
+//                        case 2:
+//                            f += "*";
+//                            break;
+//                        case 3:
+//                            f += "/";
+//                            break;
+//                    }
+//                    switch (rand.Next(2))
+//                    {
+//                        case 0:
+//                            f += 7.2;
+//                            break;
+//                        case 1:
+//                            f += randomName(rand);
+//                            break;
+//                    }
+//                }
+//                return f;
+//            }
+        
+
+
+
+
+//    // Tests for checking the values of cells-----------------------------------------------------------
+//    [TestMethod]
+//        public void TestCellValue_Double()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+
+//            s.SetContentsOfCell("A0", "1.0");
+
+//            Assert.AreEqual(s.GetCellValue("A0"), 1.0);
+            
+
+//        }
+
+//        [TestMethod]
+//        public void TestCellValue_Double_Indexer()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+
+//            s.SetContentsOfCell("A0", "1.0");
+
+//            Assert.AreEqual(s["A0"], 1.0);
+
+
+//        }
+
+//        [TestMethod]
+//        public void TestCellValue_Double_SetContentsMultipleTimes()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+
+//            s.SetContentsOfCell("A0", "1.0");
+//            s.SetContentsOfCell("A0", "6.0");
+//            s.SetContentsOfCell("A0", "100.9");
+
+//            Assert.AreEqual(s["A0"], 100.9);
+
+
+//        }
+
+//        [TestMethod]
+//        public void TestCellValue_String()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+
+//            s.SetContentsOfCell("A0", "hello");
+
+//            Assert.AreEqual(s.GetCellValue("A0"), "hello");
+
+//        }
+
+//        [TestMethod]
+//        [ExpectedException(typeof(InvalidNameException))]
+//        public void GetCellValue_InvalidSymbols()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+
+//            s.SetContentsOfCell("A0", "hello");
+
+//            s.GetCellValue("%$$@#");
+
+//        }
+
+
+//        // Recalculate Values test----------------------------------------------------------------
+//        [TestMethod]
+//        public void TestNeedToRecalculateValues()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+            
+//            s.SetContentsOfCell("A1", "40");
+//            s.SetContentsOfCell("B1", "=20+A1");
+
+//            Assert.AreEqual("20+A1", s.GetCellContents("B1").ToString());
+//            Assert.AreEqual(60.0, s.GetCellValue("B1"));
+//        }
+
+//        [TestMethod]
+//        [ExpectedException(typeof(InvalidNameException))]
+//        public void TestInvalidCellNameThrowsException()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            _ = s.GetCellValue("1A");
+//        }
+
+//        [TestMethod]
+//        public void GetCellValue_TestNonExistentCellReturnsEmptyString()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            Assert.AreEqual(string.Empty, s.GetCellValue("j7"));
+//        }
+
+//        [TestMethod]
+//        public void GetCellValue_TestValidCellReturnsString()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("A1", "hi");
+//            Assert.AreEqual("hi", s.GetCellValue("A1"));
+//        }
+
+//        [TestMethod]
+//        public void GetCellValue_TestCellReturnDouble()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("A1", "1200");
+//            Assert.AreEqual(1200.0, s.GetCellValue("A1"));
+//        }
+
+//        [TestMethod]
+//        [ExpectedException(typeof(FormulaFormatException))]
+//        public void GetCellValue_TestNonValidCellThrowsFormulaError()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("A1", "= 54 *@");
+//            Assert.IsTrue(s.GetCellValue("A1") is FormulaError);
+//        }
+
+//        // SetContentsOfCell new method tests -----------------------------------------------------------------------------
+
+//        [TestMethod]
+//        [ExpectedException(typeof(InvalidNameException))]
+//        public void SetContentsOfCell_TestInvalidCellNameThrowsException()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            _ = s.SetContentsOfCell("37A", "meow");
+//        }
+
+//        [TestMethod]
+//        public void SetContentsOfCell_TestSettingCellToDouble()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("A1", "379");
+//            Assert.AreEqual(379.0, s["A1"]);
+//        }
+
+//        [TestMethod]
+//        public void SetContentsOfCell_TestSettingCellToString()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("A1", "frogeyes");
+//            Assert.AreEqual("frogeyes", (string)s["A1"]);
+//        }
+
+//        [TestMethod]
+//        public void SetContentsOfCell_TestSettingCellToFormula()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            Assert.AreEqual(1, s.SetContentsOfCell("Y2", "=A2+22").Count);
+//        }
+
+//        [TestMethod]
+//        [ExpectedException(typeof(FormulaFormatException))]
+//        public void SetContentsOfCell_TestInvalidFormulaThrowsException()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            _ = s.SetContentsOfCell("A1", "= A2-%");
+//        }
+
+//        [TestMethod]
+//        [ExpectedException(typeof(CircularException))]
+//        public void SetContentsOfCell_TestInvalidCircularFormulaThrowsException()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            _ = s.SetContentsOfCell("A1", "= A2*A1");
+//        }
+
+
+//        [TestMethod]
+//        [ExpectedException(typeof(InvalidNameException))]
+//        public void this_TestInvalidNameThrowsExceptionIndexer()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            _ = s["B23"];
+//        }
+
+//        [TestMethod]
+//        public void this_TestCorrectCellValueRetrieved()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("A1", "hi");
+//            Assert.AreEqual("hi", (string)s["A1"]);
+//        }
+
+//        [TestMethod]
+//        public void this_TestCorrectCellValueRetrievedAfterContentChange()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("A1", "hi");
+//            s.SetContentsOfCell("A1", "32");
+//            Assert.AreEqual(32.0, s["A1"]);
+//        }
+
+//        // Changed tests -----------------------------------------------------------------------------------------------
+
+//        [TestMethod]
+//        public void Changed_TestSpreadsheetHasNotChangedSinceCreation()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            Assert.AreEqual(false, s.Changed);
+//        }
+
+//        [TestMethod]
+//        public void Changed_TestSpreadsheetHasChangedSinceCreation()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("A1", "hi");
+//            s.SetContentsOfCell("A1", "bye");
+//            Assert.AreEqual(true, s.Changed);
+//        }
+
+//        [TestMethod]
+//        public void Changed_TestSpreadsheetHasChangedStillChangedAfterAddingMoreValues_True()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            Assert.AreEqual(false, s.Changed);
+//            for (int i = 0; i < 20; i++)
+//            {
+//                s.SetContentsOfCell("A" + i, "{i}");
+//                Assert.AreEqual(true, s.Changed);
+//            }
+//        }
+
+//        [TestMethod]
+//        public void Changed_TestSpreadsheetHasNotChangedAfterSaving()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            Assert.AreEqual(false, s.Changed);
+//            for (int i = 0; i < 20; i++)
+//            {
+//                s.SetContentsOfCell("A" + i, "{i}");
+//                Assert.AreEqual(true, s.Changed);
+//            }
+//            s.Save("saved.txt");
+//            Assert.AreEqual(false, s.Changed);
+
+//        }
+
+//        // Spreadsheet(string) constructor tests ------------------------------------------------------------------------
+
+//        [TestMethod]
+//        public void Spreadsheet_TestCanOpenFileOfEmptySpreadsheet()
+//        {
+//            string sheet = ("{\"Cells\" : {} }");
+//            File.WriteAllText("save.txt", sheet);
+
+//            // NOTICE: opening the file created by this test (not a pre-existing file)
+//            Spreadsheet ss = new Spreadsheet("save.txt");
+
+//            Assert.IsTrue(ss is Spreadsheet);
+//        }
+
+//        [TestMethod]
+//        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+//        public void Spreadsheet_TestInvalidFileNameWithPathThrows()
+//        {
+//            string sheet = ("{\"Cells\" : {} }");
+//            // File.WriteAllText("/this/is/a/random/path/save.txt", sheet);
+
+//            // NOTICE: opening the file created by this test (not a pre-existing file)
+//            Spreadsheet ss = new Spreadsheet("/this/is/a/random/path/save.txt");
+//        }
+
+//        [TestMethod]
+//        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+//        public void Spreadsheet_TestInvalidCellNameInsideSpreadsheet()
+//        {
+//            string sheet = ("{ \"Cells\": { \"243ANDME1\": { \"StringForm\": \"5\" }, \"213B3\": {  \"StringForm\": \"=A1+2\" }, \"2C4\": { \"StringForm\": \"hello\" } } }");
+//            File.WriteAllText("save.txt", sheet);
+
+//            // NOTICE: opening the file created by this test (not a pre-existing file)
+//            Spreadsheet ss = new Spreadsheet("save.txt");
+//        }
+
+
+//        [TestMethod]
+//        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+
+//        public void Spreadsheet_TestInvalidFormulaInsideSpreadsheet()
+//        {
+//            string sheet = ("{ \"Cells\": { \"B3\": {  \"StringForm\": \"=A1+2/@\" } } }");
+//            File.WriteAllText("save.txt", sheet);
+
+//            // NOTICE: opening the file created by this test (not a pre-existing file)
+//            Spreadsheet ss = new Spreadsheet("save.txt");
+//        }
+
+//        [TestMethod]
+//        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+
+//        public void Spreadsheet_TestInvalidFormulaCircularDependencyInsideSpreadsheet()
+//        {
+//            string sheet = ("{ \"Cells\": { \"B3\": {  \"StringForm\": \"=A1+2*B3+23\" } } }");
+//            File.WriteAllText("save.txt", sheet);
+
+//            // NOTICE: opening the file created by this test (not a pre-existing file)
+//            Spreadsheet ss = new Spreadsheet("save.txt");
+//        }
+
+
+//        [TestMethod]
+//        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+//        public void Spreadsheet_TestFileNameDoesNotExistThrows()
+//        {
+//            string sheet = ("{\"Cells\" : {} }");
+//            File.WriteAllText("save.txt", sheet);
+
+//            Spreadsheet ss = new Spreadsheet("notsaved.txt");
+//        }
+
+
+//        [TestMethod]
+//        public void Save_TestSaveEmptySpreadsheet()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.Save("empty.txt");
+
+//            Spreadsheet sTwo = new Spreadsheet("empty.txt");
+
+//            Assert.AreEqual(0, sTwo.GetNamesOfAllNonemptyCells().Count);
+//        }
+
+//        [TestMethod]
+//        public void Save_TestOneCellInSpreadsheet()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("A1", "2");
+//            s.Save("onecell.txt");
+
+//            Spreadsheet sTwo = new Spreadsheet("onecell.txt");
+
+//            Assert.AreEqual(1, sTwo.GetNamesOfAllNonemptyCells().Count);
+//        }
+
+//        [TestMethod]
+//        public void Save_TestManyCellsInSpreadsheet_Valid()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+
+
+//            for (int i = 0; i < 100; i++)
+//            {
+//                s.SetContentsOfCell("A" + i, "1");
+//            }
+//            s.Save("many.txt");
+
+//            Spreadsheet sTwo = new Spreadsheet("many.txt");
+
+//            Assert.AreEqual(100, sTwo.GetNamesOfAllNonemptyCells().Count);
+
+//            for (int i = 0; i < 100; i++)
+//            {
+
+//                Assert.IsTrue(sTwo.GetNamesOfAllNonemptyCells().Contains("A"+ i));
+//            }
+//        }
+
+//        [TestMethod]
+//        public void Spreadsheet_TestOnlyDoublesFile_Valid()
+//        {
+//            string sheet = ("{ \"Cells\": { \"A1\": { \"StringForm\": \"3\" }, \"B3\": {  \"StringForm\": \"2\" }, \"C4\": { \"StringForm\": \"9\" }, \"D3\": { \"StringForm\": \"11\" } } }");
+//            File.WriteAllText("save.txt", sheet);
+
+//            // NOTICE: opening the file created by this test (not a pre-existing file)
+//            Spreadsheet ss = new Spreadsheet("save.txt");
+
+//            Assert.IsTrue(ss is Spreadsheet);
+//            Assert.IsTrue(ss.GetNamesOfAllNonemptyCells().Count == 4);
+//        }
+
+//        [TestMethod]
+//        public void Spreadsheet_TestOnlyStringsFile_Valid()
+//        {
+//            string sheet = ("{ \"Cells\": { \"A1\": { \"StringForm\": \"hello\" }, \"B3\": {  \"StringForm\": \"goodbye\" }, \"C4\": { \"StringForm\": \"bonjour\" }, \"D3\": { \"StringForm\": \"salut\" } } }");
+//            File.WriteAllText("save.txt", sheet);
+
+//            // NOTICE: opening the file created by this test (not a pre-existing file)
+//            Spreadsheet ss = new Spreadsheet("save.txt");
+
+//            Assert.IsTrue(ss is Spreadsheet);
+//            Assert.IsTrue(ss.GetNamesOfAllNonemptyCells().Count == 4);
+//        }
+
+//        [TestMethod]
+//        public void Spreadsheet_TestOnlyFormulasFile_Valid()
+//        {
+//            string sheet = ("{ \"Cells\": { \"A1\": { \"StringForm\": \"=2\" }, \"B3\": {  \"StringForm\": \"=A1+2\" }, \"C4\": { \"StringForm\": \"=A1+4\" }, \"D3\": { \"StringForm\": \"=A1+6\" } } }");
+//            File.WriteAllText("save.txt", sheet);
+
+//            // NOTICE: opening the file created by this test (not a pre-existing file)
+//            Spreadsheet ss = new Spreadsheet("save.txt");
+
+//            Assert.IsTrue(ss is Spreadsheet);
+//            Assert.IsTrue(ss.GetNamesOfAllNonemptyCells().Count == 4);
+//        }
+
+//        // Save with strings in file tests -----------------------------------------------------------------------------
+
+//        [TestMethod]
+//        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+//        public void Save_TestFileNameWithPathThrowsException_Invalid()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.Save("q: /missing/save.json");
+//        }
+
+//        [TestMethod]
+//        public void Save_TestSaveEmptySpreadsheet_Valid_WithoutCheckingCount()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.Save("empty.json");
+//        }
+
+//        [TestMethod]
+//        public void Save_TestSaveOneValueSpreadsheet_Valid()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+//            s.SetContentsOfCell("A1", "1");
+//            s.Save("one.json");
+//        }
+
+//        [TestMethod]
+//        public void Save_TestSaveLargeSpreadsheet_StressTest()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+
+//            for(int i = 0; i < 1000; i++)
+//            {
+//                s.SetContentsOfCell("A" + i, "meow" + i);
+//            }
+
+//            s.Save("large.json");
+
+//            Spreadsheet largeSpreadsheet = new Spreadsheet("large.json");
+
+//            Assert.IsTrue(largeSpreadsheet.GetNamesOfAllNonemptyCells().Count == 1000);
+//            Assert.AreEqual("meow892", largeSpreadsheet["A892"]);
+//        }
+
+//        [TestMethod]
+//        public void Save_TestSaveLargeDoublesSpreadsheet_Valid_StressTest()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+
+//            for (int i = 0; i < 1000; i++)
+//            {
+//                s.SetContentsOfCell("A" + i, "" + i);
+//            }
+
+//            s.Save("doubles.json");
+
+//            Spreadsheet largeDoubles = new Spreadsheet("doubles.json");
+
+//            Assert.IsTrue(largeDoubles.GetNamesOfAllNonemptyCells().Count == 1000);
+//            Assert.AreEqual(955.0, largeDoubles["A955"]);
+//        }
+
+//        [TestMethod]
+//        public void Save_TestSaveLargeFormulasSpreadsheet_StressTest()
+//        {
+//            Spreadsheet s = new Spreadsheet();
+
+//            for (int i = 0; i < 1000; i++)
+//            {
+//                s.SetContentsOfCell("A" + i, "=" + i);
+//            }
+
+//            s.Save("formulas.json");
+
+//            Spreadsheet largeFormulas = new Spreadsheet("formulas.json");
+
+//            Assert.IsTrue(largeFormulas.GetNamesOfAllNonemptyCells().Count == 1000);
+//            Assert.AreEqual(737.0, largeFormulas["A737"]);
+//        }
+
+
+
+        ///// /
+
+
+
+        [TestMethod]
+        public void GetNamesOfAllNonemptyCells_TestEmptySpreadsheet_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            Assert.AreEqual(0, s.GetNamesOfAllNonemptyCells().Count());
+        }
+
+        [TestMethod]
+        public void GetNamesOfAllNonemptyCells_TestOneValueSpreadsheet_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A2", "hello");
+            Assert.AreEqual(1, s.GetNamesOfAllNonemptyCells().Count());
+        }
+
+        /// <summary>
+        /// This method tests that many cells dependent on one cell are returning the
+        /// correct values when get names of all non empty cells is called
+        /// </summary>
+        [TestMethod]
+        public void GetNamesOfAllNonemptyCells_TestManyCellsDependentOnOneSpreadsheet_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("C3", "2");
+            for (int i = 0; i < 20; i++)
+            {
+                s.SetContentsOfCell("B" + i, $"= {i}32-30+(5*2)+C3");
+                s.SetContentsOfCell("A" + i, $" = {i}32-30+(5*2)+C3");
+            }
+
+            Assert.AreEqual(41, s.GetNamesOfAllNonemptyCells().Count());
+
+        }
+
+        /// <summary>
+        /// This method tests that one cell dependent on other cells are returning the
+        /// correct values when get names of all non empty cells is called
+        /// </summary>
+        [TestMethod]
+        public void GetNamesOfAllNonemptyCells_TestOneCellDependentOnOthersSpreadsheet_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("B5", "2");
+            s.SetContentsOfCell("D3", "4");
+            s.SetContentsOfCell("E3", "6");
+            s.SetContentsOfCell("F3", "8");
+            for (int i = 0; i < 20; i++)
+            {
+                s.SetContentsOfCell("A" + i, $"=  {i}32-30+(5*2)+B5+D3+E3+F3");
+            }
+
+            Assert.AreEqual(24, s.GetNamesOfAllNonemptyCells().Count());
+
+        }
+
+        /// <summary>
+        /// This method tests that a large spreadsheet returns the correct number of non
+        /// empty cells
+        /// </summary>
+        [TestMethod]
+        public void GetNamesOfAllNonemptyCells_TestLargeGraphSpreadsheet_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            for (int i = 0; i < 40; i++)
+            {
+                s.SetContentsOfCell("C" + i, $"{2 * i}");
+                s.SetContentsOfCell("B" + i, $"{i}");
+                s.SetContentsOfCell("A" + i, $"= {i}32-30+(5*2)");
+            }
+
+            Assert.AreEqual(120, s.GetNamesOfAllNonemptyCells().Count());
+        }
+
+        /// <summary>
+        /// This method tests that the get names of all non empty cells
+        /// method returns the correct values for each cell name
+        /// </summary>
+        [TestMethod]
+        public void GetNamesOfAllNonemptyCells_TestFormulaGraphSpreadsheet_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            for (int i = 0; i < 20; i++)
+            {
+                s.SetContentsOfCell("A" + i, $"= {i}32-30+(5*2)");
+            }
+
+            int j = 0;
+            foreach (string f in s.GetNamesOfAllNonemptyCells())
+            {
+                Assert.AreEqual("A" + j, f);
+                j++;
+            }
+
+        }
+
+        /// <summary>
+        /// This method tests that the get names of all non empty cells
+        /// method returns the correct values for each cell name
+        /// </summary>
+        [TestMethod]
+        public void GetNamesOfAllNonemptyCells_TestStringSpreadsheet_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            for (int i = 0; i < 20; i++)
+            {
+                s.SetContentsOfCell("A" + i, "wow" + i);
+            }
+
+            int j = 0;
+            foreach (string f in s.GetNamesOfAllNonemptyCells())
+            {
+                Assert.AreEqual("A" + j, f);
+                j++;
+            }
+        }
+
+        /// <summary>
+        /// This method tests that the get names of all non empty cells
+        /// method returns the correct values for each cell name
+        /// </summary>
+        [TestMethod]
+        public void GetNamesOfAllNonemptyCells_TestDoubleSpreadsheet_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            for (int i = 0; i < 20; i++)
+            {
+                s.SetContentsOfCell("A" + i, "{i + i + 0.23}");
+            }
+
+            int j = 0;
+            foreach (string f in s.GetNamesOfAllNonemptyCells())
+            {
+                Assert.AreEqual("A" + j, f);
+                j++;
+            }
+        }
+
+        /// <summary>
+        /// This method tests that a spreadsheet full of all possible values returns the
+        /// correct cell names
+        /// </summary>
+        [TestMethod]
+        public void GetNamesOfAllNonemptyCells_TestAllPossibleValuesSpreadsheet_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+
+            for (int i = 0; i < 20; i++)
+            {
+                if (i < 15)
+                {
+                    s.SetContentsOfCell("A" + i, "{2 * i}");
+                }
+                else if (i == 10)
+                {
+                    s.SetContentsOfCell("A" + i, "i" + i);
+                }
+                else
+                {
+                    s.SetContentsOfCell("A" + i, $"= {i}32-30+(5*2)");
+                }
+            }
+            int j = 0;
+            foreach (string f in s.GetNamesOfAllNonemptyCells())
+            {
+                Assert.AreEqual("A" + j, f);
+                j++;
+            }
+        }
+
+        // GetCellContents(string) tests --------------------------------------------------------------------
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidNameException))]
+        public void GetCellContents_TestInvalidName_Invalid()
+        {
+            _ = new Spreadsheet().GetCellContents("a1a");
+        }
+
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidNameException))]
+        public void GetCellContents_TestInvalidNameEmptyString_Invalid()
+        {
+            _ = new Spreadsheet().GetCellContents(String.Empty);
+        }
+
+        [TestMethod]
+        public void GetCellContents_TestEmptyCell_Valid()
+        {
+            Assert.AreEqual(string.Empty, new Spreadsheet().GetCellContents("B3"));
+        }
+
+        [TestMethod]
+        public void GetCellContents_TestStringContent_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "goodbye");
+            Assert.AreEqual("goodbye", s.GetCellContents("A1"));
+        }
+
+        [TestMethod]
+        public void GetCellContents_TestDoubleContent_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "32");
+            double d = Convert.ToDouble(s.GetCellContents("A1"));
+            Assert.AreEqual(32, Convert.ToDouble(s.GetCellContents("A1")));
+        }
+
+        [TestMethod]
+        public void GetCellContents_TestDecimalContent_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("D8", "3.1415");
+            Assert.AreEqual(3.1415, Convert.ToDouble(s.GetCellContents("D8")));
+        }
+
+        [TestMethod]
+        public void GetCellContents_TestPowerOfTenContent_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "100");
+            Assert.AreEqual(100, Convert.ToDouble(s.GetCellContents("A1")));
+        }
+
+        [TestMethod]
+        public void GetCellContents_TestFormulaContent_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "= abc2 *2 -0+32");
+            Assert.AreEqual(new Formula("abc2 *2 -0+32"), (Formula)s.GetCellContents("A1"));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void GetCellContents_TestFormulaResultingInErrorContent_Invalid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "= abc2 *2 -0+32+@");
+            Assert.AreEqual(new Formula("abc2 *2 -0+32+@"), new Spreadsheet().GetCellContents("A1"));
+        }
+
+        // SetContentsOfCell(double/string/formula) -----------------------------------------------------------------------------
+        [TestMethod]
+        [ExpectedException(typeof(InvalidNameException))]
+        public void SetContentsOfCell_TestInvalidCellNameDoubleContent_Invalid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            _ = s.SetContentsOfCell("21A1", "{1e2}");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidNameException))]
+        public void SetContentsOfCell_TestInvalidCellNameStringContent_Invalid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            _ = s.SetContentsOfCell("21A1", "wow");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidNameException))]
+        public void SetContentsOfCell_TestInvalidCellNameFormulaContent_Invalid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            _ = s.SetContentsOfCell("21A1", "= 2+3");
+        }
+
+        [TestMethod]
+        public void SetContentsOfCell_TestDoublePreviouslyDouble_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "0");
+            s.SetContentsOfCell("A1", "3");
+            Assert.AreEqual(1, s.SetContentsOfCell("A1", "32SetContentsOfCell").Count());
+        }
+
+        [TestMethod]
+        public void SetContentsOfCell_TestDoublePreviouslyString_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "hi");
+            s.SetContentsOfCell("A1", "bye");
+            Assert.AreEqual(1, s.SetContentsOfCell("A1", "salut").Count());
+        }
+
+        [TestMethod]
+        public void SetContentsOfCell_TestDoublePreviouslyFormula_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "= A5+ A6 - 2 + 8");
+            Assert.AreEqual(1, s.SetContentsOfCell("A1", "0").Count());
+        }
+
+        [TestMethod]
+        public void SetContentsOfCell_TestStringPreviouslyDouble_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "32");
+            Assert.AreEqual(1, s.SetContentsOfCell("A1", "fromage").Count());
+        }
+
+        [TestMethod]
+        public void SetContentsOfCell_TestStringPreviouslyString_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "merci");
+            s.SetContentsOfCell("A1", "bye");
+            Assert.AreEqual(1, s.SetContentsOfCell("A1", "merci beacoup").Count());
+        }
+
+        [TestMethod]
+        public void SetContentsOfCell_TestStringPreviouslyFormula_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "=A5+ A6 - 2 + 8");
+            Assert.AreEqual(1, s.SetContentsOfCell("A1", "comment ca va").Count());
+        }
+
+        [TestMethod]
+        public void SetContentsOfCell_TestFormulaPreviouslyDouble_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "32");
+            Assert.AreEqual(1, s.SetContentsOfCell("A1", "= 8 + 12").Count());
+        }
+
+        [TestMethod]
+        public void SetContentsOfCell_TestFormulaPreviouslyString_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "merci");
+            s.SetContentsOfCell("A1", "bye");
+            Assert.AreEqual(1, s.SetContentsOfCell("A1", "= B12*2-A5+C6").Count());
+        }
+
+        [TestMethod]
+        public void SetContentsOfCell_TestFormulaPreviouslyFormula_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "= A5+ A6 - 2 + 8");
+            Assert.AreEqual(1, s.SetContentsOfCell("A1", "= B25").Count());
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(CircularException))]
+        public void SetContentsOfCell_TestCircularDependencyPreviouslyString_Invalid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "hi");
+            _ = s.SetContentsOfCell("A1", "= A1+23-2+N4");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(CircularException))]
+        public void SetContentsOfCell_TestCircularDependencyPreviouslyDouble_Invalid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "82");
+            _ = s.SetContentsOfCell("A1", "= A1+23-2+N4");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(CircularException))]
+        public void SetContentsOfCell_TestCircularDependencyPreviouslyFormula_Invalid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "= 32*2-0");
+            _ = s.SetContentsOfCell("A1", "= A1+23-2+N4");
+        }
+
+        // this[string] tests -----------------------------------------------------------------------------------------
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidNameException))]
+        public void this_TestInvalidNameThrowsException_Invalid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            _ = s["B23"];
+        }
+
+        [TestMethod]
+        public void this_TestCorrectCellValueRetrieved_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "hi");
+            Assert.AreEqual("hi", (string)s["A1"]);
+        }
+
+        [TestMethod]
+        public void this_TestCorrectCellValueRetrievedAfterContentChange_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "hi");
+            s.SetContentsOfCell("A1", "32");
+            Assert.AreEqual(32.0, s["A1"]);
+        }
+
+        // Changed tests -----------------------------------------------------------------------------------------------
+
+        [TestMethod]
+        public void Changed_TestSpreadsheetHasNotChangedSinceCreation_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            Assert.AreEqual(false, s.Changed);
+        }
+
+        [TestMethod]
+        public void Changed_TestSpreadsheetHasChangedSinceCreation_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "hi");
+            s.SetContentsOfCell("A1", "bye");
+            Assert.AreEqual(true, s.Changed);
+        }
+
+        [TestMethod]
+        public void Changed_TestSpreadsheetHasChangedStillChangedAfterAddingMoreValues_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            Assert.AreEqual(false, s.Changed);
+            for (int i = 0; i < 20; i++)
+            {
+                s.SetContentsOfCell("A" + i, "{i}");
+                Assert.AreEqual(true, s.Changed);
+            }
+        }
+
+        [TestMethod]
+        public void Changed_TestSpreadsheetHasNotChangedAfterSaving_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            Assert.AreEqual(false, s.Changed);
+            for (int i = 0; i < 20; i++)
+            {
+                s.SetContentsOfCell("A" + i, "{i}");
+                Assert.AreEqual(true, s.Changed);
+            }
+            s.Save("saved.txt");
+            Assert.AreEqual(false, s.Changed);
+
+        }
+
+        // Spreadsheet(string) constructor tests ------------------------------------------------------------------------
+
+        [TestMethod]
+        public void Spreadsheet_TestCanOpenFileOfEmptySpreadsheet_Valid()
+        {
+            string sheet = ("{\"Cells\" : {} }");
+            File.WriteAllText("save.txt", sheet);
+
+            // NOTICE: opening the file created by this test (not a pre-existing file)
+            Spreadsheet ss = new Spreadsheet("save.txt");
+
+            Assert.IsTrue(ss is Spreadsheet);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+        public void Spreadsheet_TestInvalidFileNameWithPathThrows_Invalid()
+        {
+            Spreadsheet ss = new Spreadsheet("/this/is/a/random/path/save.txt");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+        public void Spreadsheet_TestInvalidCellNameInsideSpreadsheet_Invalid()
+        {
+            string sheet = ("{ \"Cells\": { \"243ANDME1\": { \"StringForm\": \"5\" }, \"213B3\": {  \"StringForm\": \"=A1+2\" }, \"2C4\": { \"StringForm\": \"hello\" } } }");
+            File.WriteAllText("save.txt", sheet);
+
+            // NOTICE: opening the file created by this test (not a pre-existing file)
+            Spreadsheet ss = new Spreadsheet("save.txt");
+        }
+
+
+        [TestMethod]
+        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+
+        public void Spreadsheet_TestInvalidFormulaInsideSpreadsheet_Invalid()
+        {
+            string sheet = ("{ \"Cells\": { \"B3\": {  \"StringForm\": \"=A1+2/@\" } } }");
+            File.WriteAllText("save.txt", sheet);
+
+            // NOTICE: opening the file created by this test (not a pre-existing file)
+            Spreadsheet ss = new Spreadsheet("save.txt");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+
+        public void Spreadsheet_TestInvalidFormulaCircularDependencyInsideSpreadsheet_Invalid()
+        {
+            string sheet = ("{ \"Cells\": { \"B3\": {  \"StringForm\": \"=A1+2*B3+23\" } } }");
+            File.WriteAllText("save.txt", sheet);
+
+            // NOTICE: opening the file created by this test (not a pre-existing file)
+            Spreadsheet ss = new Spreadsheet("save.txt");
+        }
+
+
+        [TestMethod]
+        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+        public void Spreadsheet_TestFileNameDoesNotExistThrows_Invalid()
+        {
+            string sheet = ("{\"Cells\" : {} }");
+            File.WriteAllText("save.txt", sheet);
+
+            Spreadsheet ss = new Spreadsheet("notsave.txt");
+        }
+
+        [TestMethod]
+        public void Spreadsheet_TestOnlyDoublesFile_Valid()
+        {
+            string sheet = ("{ \"Cells\": { \"A1\": { \"StringForm\": \"5\" }, \"B3\": {  \"StringForm\": \"7\" }, \"C4\": { \"StringForm\": \"9\" }, \"D3\": { \"StringForm\": \"11\" } } }");
+            File.WriteAllText("save.txt", sheet);
+
+            // NOTICE: opening the file created by this test (not a pre-existing file)
+            Spreadsheet ss = new Spreadsheet("save.txt");
+
+            Assert.IsTrue(ss is Spreadsheet);
+        }
+
+        [TestMethod]
+        public void Spreadsheet_TestOnlyStringsFile_Valid()
+        {
+            string sheet = ("{ \"Cells\": { \"A1\": { \"StringForm\": \"hello\" }, \"B3\": {  \"StringForm\": \"goodbye\" }, \"C4\": { \"StringForm\": \"bonjour\" }, \"D3\": { \"StringForm\": \"salut\" } } }");
+            File.WriteAllText("save.txt", sheet);
+
+            // NOTICE: opening the file created by this test (not a pre-existing file)
+            Spreadsheet ss = new Spreadsheet("save.txt");
+
+            Assert.IsTrue(ss is Spreadsheet);
+        }
+
+        [TestMethod]
+        public void Spreadsheet_TestOnlyFormulasFile_Valid()
+        {
+            string sheet = ("{ \"Cells\": { \"A1\": { \"StringForm\": \"=2\" }, \"B3\": {  \"StringForm\": \"=A1+2\" }, \"C4\": { \"StringForm\": \"=A1+4\" }, \"D3\": { \"StringForm\": \"=A1+6\" } } }");
+            File.WriteAllText("save.txt", sheet);
+
+            // NOTICE: opening the file created by this test (not a pre-existing file)
+            Spreadsheet ss = new Spreadsheet("save.txt");
+
+            Assert.IsTrue(ss is Spreadsheet);
+        }
+
+        // Save(string) tests -----------------------------------------------------------------------------
+        [TestMethod]
+        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+        public void Save_TestFileNameWithPathThrowsException_Invalid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.Save("q: /missing/save.json");
+        }
+
+        [TestMethod]
+        public void Save_TestSaveEmptySpreadsheet_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.Save("empty.txt");
+
+            Spreadsheet sTwo = new Spreadsheet("empty.txt");
+
+            Assert.AreEqual(0, sTwo.GetNamesOfAllNonemptyCells().Count);
+        }
+
+        [TestMethod]
+        public void Save_TestSaveOneValueSpreadsheet_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "1");
+            s.Save("one.txt");
+
+            Spreadsheet sTwo = new Spreadsheet("one.txt");
+            ISet<string> sTwoNames = sTwo.GetNamesOfAllNonemptyCells();
+
+            foreach (string name in sTwoNames)
+            {
+                Assert.AreEqual("A1", name);
+            }
+        }
+
+        [TestMethod]
+        public void Save_TestSaveLargeSpreadsheet_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            for (int i = 1; i > 21; i++)
+            {
+                s.SetContentsOfCell("A" + i, i.ToString());
+            }
+            s.Save("large.txt");
+
+            Spreadsheet sTwo = new Spreadsheet("large.txt");
+            ISet<string> sTwoNames = sTwo.GetNamesOfAllNonemptyCells();
+
+            double j = 1;
+            foreach (string name in sTwoNames)
+            {
+                Assert.AreEqual(j, sTwo.GetCellContents(name));
+                j++;
+            }
+        }
+
+        [TestMethod]
+        public void Save_TestSaveOnlyDoublesSpreadsheet_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            for (int i = 1; i > 10; i++)
+            {
+                s.SetContentsOfCell("A" + i, i.ToString());
+            }
+            s.Save("doubles.txt");
+
+            Spreadsheet sTwo = new Spreadsheet("doubles.txt");
+            ISet<string> sTwoNames = sTwo.GetNamesOfAllNonemptyCells();
+
+            double j = 1;
+            foreach (string name in sTwoNames)
+            {
+                Assert.AreEqual(j, sTwo.GetCellContents(name));
+                j++;
+            }
+        }
+
+        [TestMethod]
+        public void Save_TestSaveOnlyStringsSpreadsheet_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            for (int i = 1; i > 10; i++)
+            {
+                s.SetContentsOfCell("A" + i, "wow:)" + i);
+            }
+            s.Save("strings.txt");
+
+            Spreadsheet sTwo = new Spreadsheet("strings.txt");
+            ISet<string> sTwoNames = sTwo.GetNamesOfAllNonemptyCells();
+
+            double j = 1;
+            foreach (string name in sTwoNames)
+            {
+                Assert.AreEqual("wow:)" + j, sTwo.GetCellContents(name));
+                j++;
+            }
+        }
+
+        [TestMethod]
+        public void Save_TestSaveOnlyFormulasSpreadsheet_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            for (int i = 1; i > 10; i++)
+            {
+                s.SetContentsOfCell("A" + i, "=" + i.ToString());
+            }
+            s.Save("formulas.txt");
+
+            Spreadsheet sTwo = new Spreadsheet("formulas.txt");
+            ISet<string> sTwoNames = sTwo.GetNamesOfAllNonemptyCells();
+
+            double j = 1;
+            foreach (string name in sTwoNames)
+            {
+                Assert.AreEqual(new Formula($"{j}"), sTwo.GetCellContents(name));
+                j++;
+            }
+        }
+
+        // GetCellValue(string) tests -----------------------------------------------------------------------------
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidNameException))]
+        public void GetCellValue_TestInvalidCellNameThrowsException_Invalid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            _ = s.GetCellValue("32A");
+        }
+
+        [TestMethod]
+        public void GetCellValue_TestNonExistentCell_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            Assert.AreEqual(string.Empty, s.GetCellValue("A7"));
+        }
+
+        [TestMethod]
+        public void GetCellValue_TestNonValidCellReturnString_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "hi");
+            Assert.AreEqual("hi", s.GetCellValue("A1"));
+        }
+
+        [TestMethod]
+        public void GetCellValue_TestNonValidCellReturnDouble_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "120");
+            Assert.AreEqual(120.0, s.GetCellValue("A1"));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void GetCellValue_TestNonValidCellReturnFormulaError_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "= 54 *@");
+            Assert.IsTrue(s.GetCellValue("A1") is FormulaError);
+        }
+
+        // SetContentsOfCell(string, string) tests -----------------------------------------------------------------------------
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidNameException))]
+        public void SetContentsOfCell_TestInvalidCellNameThrowsException_Invalid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            _ = s.SetContentsOfCell("32A", "hello");
+        }
+
+        [TestMethod]
+        public void SetContentsOfCell_TestSettingCellToDouble_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "32");
+            Assert.AreEqual(32.0, s["A1"]);
+        }
+
+        [TestMethod]
+        public void SetContentsOfCell_TestSettingCellToString_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "qwertyuiop");
+            Assert.AreEqual("qwertyuiop", (string)s["A1"]);
+        }
+
+        [TestMethod]
+        public void SetContentsOfCell_TestSettingCellToFormula_Valid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            Assert.AreEqual(1, s.SetContentsOfCell("A1", "=A2+22").Count);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void SetContentsOfCell_TestInvalidFormulaThrowsException_Invalid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            _ = s.SetContentsOfCell("A1", "= A2-%");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(CircularException))]
+        public void SetContentsOfCell_TestInvalidCircularFormulaThrowsException_Invalid()
+        {
+            Spreadsheet s = new Spreadsheet();
+            _ = s.SetContentsOfCell("A1", "= A2*A1");
+        }
+
+        // Stress tests -----------------------------------------------------------------------------
+
+        [TestMethod]
+        public void StressTestOne()
+        {
+            Spreadsheet s = new Spreadsheet();
+            for (int i = 0; i < 200; i++)
+            {
+                s.SetContentsOfCell("A" + i, $"{i}");
+            }
+
+            s.Save("largeFile.txt");
+            Spreadsheet sTwo = new Spreadsheet("largeFile.txt");
+            ISet<string> sTwoNames = sTwo.GetNamesOfAllNonemptyCells();
+
+            double j = 0;
+            foreach (string name in sTwoNames)
+            {
+                Assert.AreEqual(j, sTwo.GetCellContents(name));
+                j++;
+            }
+
+        }
+
+        [TestMethod]
+        public void StressTestTwo()
+        {
+            Spreadsheet s = new Spreadsheet();
+            for (int i = 0; i < 10; i++)
+            {
+                s.SetContentsOfCell("B" + i, $"= {i}+230");
+            }
+
+            s.Save("largeFile.txt");
+            Spreadsheet sTwo = new Spreadsheet("largeFile.txt");
+            ISet<string> sTwoNames = sTwo.GetNamesOfAllNonemptyCells();
+
+            double j = 0;
+            foreach (string name in sTwoNames)
+            {
+                Formula f = new Formula(j + "+230");
+                Assert.AreEqual(f, sTwo.GetCellContents(name));
+                j++;
+            }
+        }
+
+        [TestMethod]
+        public void StressTestThree()
+        {
+            Spreadsheet s = new Spreadsheet();
+            for (int i = 0; i < 200; i++)
+            {
+                s.SetContentsOfCell("C" + i, $"bonjour{i}");
+            }
+
+            s.Save("largeFile.txt");
+            Spreadsheet sTwo = new Spreadsheet("largeFile.txt");
+            ISet<string> sTwoNames = sTwo.GetNamesOfAllNonemptyCells();
+
+            double j = 0;
+            foreach (string name in sTwoNames)
+            {
+                Assert.AreEqual("bonjour" + j, sTwo.GetCellContents(name));
+                j++;
+            }
+        }
+
+        // GRADESCOPE TESTS ----------- GRADESCOPE TESTS ---------- GRADESCOPETESTS ---------- GRADESCOPE TESTS-------------
+
+        // EMPTY SPREADSHEETS
+        [TestMethod()]
+        [TestCategory("2"), Timeout(2000)]
+        [ExpectedException(typeof(InvalidNameException))]
+        public void GetCellContents_InvalidName_Throws()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.GetCellContents("1AA");
+        }
+
+        [TestMethod()]
+        [TestCategory("3"), Timeout(2000)]
+        public void GetCellContents_EmptyCell_Works()
+        {
+            Spreadsheet s = new Spreadsheet();
+            Assert.AreEqual("", s.GetCellContents("A2"));
+        }
+
+        // SETTING CELL TO A DOUBLE
+        [TestMethod()]
+        [TestCategory("5"), Timeout(2000)]
+        [ExpectedException(typeof(InvalidNameException))]
+        public void SetContentsOfCell_InvalidNameDouble_Throws()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("1A1A", "1.5");
+        }
+
+        [TestMethod()]
+        [TestCategory("6"), Timeout(2000)]
+        public void SetAndGet_Double_Works()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("Z7", "1.5");
+            Assert.AreEqual(1.5, (double)s.GetCellContents("Z7"), 1e-9);
+        }
+
+        // SETTING CELL TO A STRING
+        [TestMethod()]
+        [TestCategory("9"), Timeout(2000)]
+        [ExpectedException(typeof(InvalidNameException))]
+        public void SetContentsOfCell_InvalidNameString_Throws()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("1AZ", "hello");
+        }
+
+        [TestMethod()]
+        [TestCategory("10"), Timeout(2000)]
+        public void SetAndGet_String_Works()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("Z7", "hello");
+            Assert.AreEqual("hello", s.GetCellContents("Z7"));
+        }
+
+        // SETTING CELL TO A FORMULA
+        [TestMethod()]
+        [TestCategory("13")]
+        [ExpectedException(typeof(InvalidNameException))]
+        public void SetContentsOfCell_InvalidNameFormula_Throws()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("1AZ", "= 2");
+        }
+
+        [TestMethod()]
+        [TestCategory("14"), Timeout(2000)]
+        public void SetAndGet_Formula_Works()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("Z7", "= 3");
+            Formula f = (Formula)s.GetCellContents("Z7");
+            Assert.AreEqual(new Formula("3"), f);
+            Assert.AreNotEqual(new Formula("2"), f);
+        }
+
+        // CIRCULAR FORMULA DETECTION
+        [TestMethod()]
+        [TestCategory("15"), Timeout(2000)]
+        [ExpectedException(typeof(CircularException))]
+        public void SetContentsOfCell_Circular_Throws()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "= A2");
+            s.SetContentsOfCell("A2", "= A1");
+        }
+
+        [TestMethod()]
+        [TestCategory("16"), Timeout(2000)]
+        [ExpectedException(typeof(CircularException))]
+        public void SetContentsOfCell_IndirectCircular_Throws()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "= A2+A3");
+            s.SetContentsOfCell("A3", "= A4+A5");
+            s.SetContentsOfCell("A5", "= A6+A7");
+            s.SetContentsOfCell("A7", "= A1+A1");
+        }
+
+        [TestMethod()]
+        [TestCategory("17"), Timeout(2000)]
+        [ExpectedException(typeof(CircularException))]
+        public void SetContentsOfCell_Circular_UndoesCellChanges()
+        {
+            Spreadsheet s = new Spreadsheet();
+            try
+            {
+                s.SetContentsOfCell("A1", "= A2+A3");
+                s.SetContentsOfCell("A2", "15");
+                s.SetContentsOfCell("A3", "30");
+                s.SetContentsOfCell("A2", "= A3*A1");
+            }
+            catch (CircularException)
+            {
+                double d = (double)s.GetCellContents("A2");
+                Assert.AreEqual(15, (double)s.GetCellContents("A2"), 1e-9);
+                throw; // C# shortcut to rethrow the same exception that was caught
+            }
+        }
+
+        [TestMethod()]
+        [TestCategory("17b"), Timeout(2000)]
+        [ExpectedException(typeof(CircularException))]
+        public void SetContentsOfCell_Circular_UndoesGraphChanges()
+        {
+            Spreadsheet s = new Spreadsheet();
+            try
+            {
+                s.SetContentsOfCell("A1", "= A2");
+                s.SetContentsOfCell("A2", "= A1");
+            }
+            catch (CircularException)
+            {
+                Assert.AreEqual("", s.GetCellContents("A2"));
+                Assert.IsTrue(new HashSet<string> { "A1" }.SetEquals(s.GetNamesOfAllNonemptyCells()));
+                throw; // C# shortcut to rethrow the same exception that was caught
+            }
+        }
+
+        // NONEMPTY CELLS
+        [TestMethod()]
+        [TestCategory("18"), Timeout(2000)]
+        public void GetNames_Empty_Works()
+        {
+            Spreadsheet s = new Spreadsheet();
+            Assert.IsFalse(s.GetNamesOfAllNonemptyCells().GetEnumerator().MoveNext());
+        }
+
+        [TestMethod()]
+        [TestCategory("19")]
+        public void GetNames_ExplicitlySetEmpty_Works()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("B1", "");
+            Assert.IsFalse(s.GetNamesOfAllNonemptyCells().GetEnumerator().MoveNext());
+        }
+
+        [TestMethod()]
+        [TestCategory("20")]
+        public void GetNames_NonemptyCellString_Works()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("B1", "hello");
+            Assert.IsTrue(new HashSet<string>(s.GetNamesOfAllNonemptyCells()).SetEquals(new HashSet<string>() { "B1" }));
+        }
+
+        [TestMethod()]
+        [TestCategory("21")]
+        public void GetNames_NonemptyCellDouble_Works()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("B1", "52.25");
+            Assert.IsTrue(new HashSet<string>(s.GetNamesOfAllNonemptyCells()).SetEquals(new HashSet<string>() { "B1" }));
+        }
+
+        [TestMethod()]
+        [TestCategory("22")]
+        public void GetNames_NonemptyCellFormula_Works()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("B1", "= 3.5");
+            Assert.IsTrue(new HashSet<string>(s.GetNamesOfAllNonemptyCells()).SetEquals(new HashSet<string>() { "B1" }));
+        }
+
+        [TestMethod()]
+        [TestCategory("23")]
+        public void GetNames_NonemptyCells_Works()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "17.2");
+            s.SetContentsOfCell("C1", "hello");
+            s.SetContentsOfCell("B1", "= 3.5");
+            Assert.IsTrue(new HashSet<string>(s.GetNamesOfAllNonemptyCells()).SetEquals(new HashSet<string>() { "A1", "B1", "C1" }));
+        }
+
+        // RETURN VALUE OF SET CELL CONTENTS
+        [TestMethod()]
+        [TestCategory("24"), Timeout(2000)]
+        public void SetContentsOfCell_Double_NoFalseDependencies()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("B1", "hello");
+            s.SetContentsOfCell("C1", "= 5");
+            Assert.IsTrue(s.SetContentsOfCell("A1", "17.2").SequenceEqual(new List<string>() { "A1" }));
+        }
+
+        [TestMethod()]
+        [TestCategory("25"), Timeout(2000)]
+        public void SetContentsOfCell_String_NoFalseDependencies()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "17.2");
+            s.SetContentsOfCell("C1", "= 5");
+            Assert.IsTrue(s.SetContentsOfCell("B1", "hello").SequenceEqual(new List<string>() { "B1" }));
+        }
+
+        [TestMethod()]
+        [TestCategory("26"), Timeout(2000)]
+        public void SetContentsOfCell_Formula_NoFalseDependencies()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "17.2");
+            s.SetContentsOfCell("B1", "hello");
+            Assert.IsTrue(s.SetContentsOfCell("C1", "= 5").SequenceEqual(new List<string>() { "C1" }));
+        }
+
+        [TestMethod()]
+        [TestCategory("27"), Timeout(2000)]
+        public void SetContentsOfCell_ChainDependencies_Works()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "= A2+A3");
+            s.SetContentsOfCell("A2", "6");
+            s.SetContentsOfCell("A3", "= A2+A4");
+            s.SetContentsOfCell("A4", "= A2+A5");
+            IList<string> testL = s.SetContentsOfCell("A5", "82.5");
+            Assert.IsTrue(s.SetContentsOfCell("A5", "82.5").SequenceEqual(new List<string>() { "A5", "A4", "A3", "A1" }));
+        }
+
+        // CHANGING CELLS
+        [TestMethod()]
+        [TestCategory("28"), Timeout(2000)]
+        public void SetContentsOfCell_FormulaToDouble_Works()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "= A2+A3");
+            s.SetContentsOfCell("A1", "2.5");
+            Assert.AreEqual(2.5, (double)s.GetCellContents("A1"), 1e-9);
+        }
+
+        [TestMethod()]
+        [TestCategory("29"), Timeout(2000)]
+        public void SetContentsOfCell_FormulaToString_Works()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "= A2+A3");
+            s.SetContentsOfCell("A1", "Hello");
+            Assert.AreEqual("Hello", (string)s.GetCellContents("A1"));
+        }
+
+        [TestMethod()]
+        [TestCategory("30"), Timeout(2000)]
+        public void SetContentsOfCell_StringToFormula_Works()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "Hello");
+            s.SetContentsOfCell("A1", "= 23");
+            Assert.AreEqual(new Formula("23"), (Formula)s.GetCellContents("A1"));
+            Assert.AreNotEqual(new Formula("24"), (Formula)s.GetCellContents("A1"));
+        }
+
+        // STRESS TESTS
+        [TestMethod()]
+        [TestCategory("31"), Timeout(2000)]
+        public void TestStress1()
+        {
+            Spreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "= B1+B2");
+            s.SetContentsOfCell("B1", "= C1-C2");
+            s.SetContentsOfCell("B2", "= C3*C4");
+            s.SetContentsOfCell("C1", "= D1*D2");
+            s.SetContentsOfCell("C2", "= D3*D4");
+            s.SetContentsOfCell("C3", "= D5*D6");
+            s.SetContentsOfCell("C4", "= D7*D8");
+            s.SetContentsOfCell("D1", "= E1");
+            s.SetContentsOfCell("D2", "= E1");
+            s.SetContentsOfCell("D3", "= E1");
+            s.SetContentsOfCell("D4", "= E1");
+            s.SetContentsOfCell("D5", "= E1");
+            s.SetContentsOfCell("D6", "= E1");
+            s.SetContentsOfCell("D7", "= E1");
+            s.SetContentsOfCell("D8", "= E1");
+            IList<String> cells = s.SetContentsOfCell("E1", "0");
+            Assert.IsTrue(new HashSet<string>() { "A1", "B1", "B2", "C1", "C2", "C3", "C4", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "E1" }.SetEquals(cells));
+        }
+
+        // Repeated for extra weight
+        [TestMethod()]
+        [TestCategory("32")]
+        public void TestStress1a()
+        {
+            TestStress1();
+        }
+        [TestMethod()]
+        [TestCategory("33")]
+        public void TestStress1b()
+        {
+            TestStress1();
+        }
+        [TestMethod()]
+        [TestCategory("34")]
+        public void TestStress1c()
+        {
+            TestStress1();
+        }
+
+        [TestMethod()]
+        [TestCategory("35")]
+        public void TestStress2()
+        {
+            Spreadsheet s = new Spreadsheet();
+            ISet<String> cells = new HashSet<string>();
+            for (int i = 1; i < 200; i++)
+            {
+                cells.Add("A" + i);
+                Assert.IsTrue(cells.SetEquals(s.SetContentsOfCell("A" + i, "= A" + (i + 1))));
+            }
+        }
+        [TestMethod()]
+        [TestCategory("36")]
+        public void TestStress2a()
+        {
+            TestStress2();
+        }
+        [TestMethod()]
+        [TestCategory("37")]
+        public void TestStress2b()
+        {
+            TestStress2();
+        }
+        [TestMethod()]
+        [TestCategory("38")]
+        public void TestStress2c()
+        {
+            TestStress2();
+        }
+
+        [TestMethod()]
+        [TestCategory("39")]
+        public void TestStress3()
+        {
+            Spreadsheet s = new Spreadsheet();
+            for (int i = 1; i < 200; i++)
+            {
+                s.SetContentsOfCell("A" + i, "= A" + (i + 1));
+            }
+            try
+            {
+                s.SetContentsOfCell("A150", "= A50");
+                Assert.Fail();
+            }
+            catch (CircularException)
+            {
+            }
+        }
+
+        [TestMethod()]
+        [TestCategory("40")]
+        public void TestStress3a()
+        {
+            TestStress3();
+        }
+        [TestMethod()]
+        [TestCategory("41")]
+        public void TestStress3b()
+        {
+            TestStress3();
+        }
+        [TestMethod()]
+        [TestCategory("42")]
+        public void TestStress3c()
+        {
+            TestStress3();
+        }
+
+        [TestMethod()]
+        [TestCategory("43")]
+        public void TestStress4()
+        {
+            Spreadsheet s = new Spreadsheet();
+            for (int i = 0; i < 500; i++)
+            {
+                s.SetContentsOfCell("A1" + i, $"=A1{(i + 1)}");
+            }
+            LinkedList<string> firstCells = new LinkedList<string>();
+            LinkedList<string> lastCells = new LinkedList<string>();
+            for (int i = 0; i < 250; i++)
+            {
+                firstCells.AddFirst("A1" + i);
+                lastCells.AddFirst("A1" + (i + 250));
+            }
+            Assert.IsTrue(s.SetContentsOfCell("A1249", "25.0").SequenceEqual(firstCells));
+            Assert.IsTrue(s.SetContentsOfCell("A1499", "0").SequenceEqual(lastCells));
+        }
+        [TestMethod()]
+        [TestCategory("44")]
+        public void TestStress4a()
+        {
+            TestStress4();
+        }
+        [TestMethod()]
+        [TestCategory("45")]
+        public void TestStress4b()
+        {
+            TestStress4();
+        }
+        [TestMethod()]
+        [TestCategory("46")]
+        public void TestStress4c()
+        {
+            TestStress4();
+        }
+
+        [TestMethod()]
+        [TestCategory("47")]
+        public void TestStress5()
+        {
+            RunRandomizedTest(47, 2519);
+        }
+
+        [TestMethod()]
+        [TestCategory("48")]
+        public void TestStress6()
+        {
+            RunRandomizedTest(48, 2521);
+        }
+
+        [TestMethod()]
+        [TestCategory("49")]
+        public void TestStress7()
+        {
+            RunRandomizedTest(49, 2526);
+        }
+
+        [TestMethod()]
+        [TestCategory("50")]
+        public void TestStress8()
+        {
+            RunRandomizedTest(50, 2521);
+        }
+
+        /// <summary>
+        /// Sets random contents for a random cell 10000 times
+        /// </summary>
+        /// <param name="seed">Random seed</param>
+        /// <param name="size">The known resulting spreadsheet size, given the seed</param>
+        public void RunRandomizedTest(int seed, int size)
+        {
+            Spreadsheet s = new Spreadsheet();
+            Random rand = new Random(seed);
+            for (int i = 0; i < 10000; i++)
+            {
+                try
+                {
+                    switch (rand.Next(3))
+                    {
+                        case 0:
+                            s.SetContentsOfCell(randomName(rand), "3.14");
+                            break;
+                        case 1:
+                            s.SetContentsOfCell(randomName(rand), "hello");
+                            break;
+                        case 2:
+                            s.SetContentsOfCell(randomName(rand), randomFormula(rand));
+                            break;
+                    }
+                }
+                catch (CircularException)
+                {
+                }
+            }
+            ISet<string> set = new HashSet<string>(s.GetNamesOfAllNonemptyCells());
+            Assert.AreEqual(size, set.Count);
+        }
+
+        /// <summary>
+        /// Generates a random cell name with a capital letter and number between 1 - 99
+        /// </summary>
+        /// <param name="rand"></param>
+        /// <returns></returns>
+        private string randomName(Random rand)
+        {
+            return "ABCDEFGHIJKLMNOPQRSTUVWXYZ".Substring(rand.Next(26), 1) + (rand.Next(99) + 1);
+        }
+
+        /// <summary>
+        /// Generates a random Formula
+        /// </summary>
+        /// <param name="rand"></param>
+        /// <returns></returns>
+        private string randomFormula(Random rand)
+        {
+            string f = randomName(rand);
+            for (int i = 0; i < 10; i++)
+            {
+                switch (rand.Next(4))
+                {
+                    case 0:
+                        f += "+";
+                        break;
+                    case 1:
+                        f += "-";
+                        break;
+                    case 2:
+                        f += "*";
+                        break;
+                    case 3:
+                        f += "/";
+                        break;
+                }
+                switch (rand.Next(2))
+                {
+                    case 0:
+                        f += 7.2;
+                        break;
+                    case 1:
+                        f += randomName(rand);
+                        break;
+                }
+            }
+            return f;
+        }
+
+    }
+
+
+
+
+
+
+}
